@@ -6,136 +6,161 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="askeza">
-<meta name="theme-color" content="#0a0a1a">
-<link rel="manifest" href="data:application/json,%7B%22name%22%3A%22askeza%22%2C%22short_name%22%3A%22askeza%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230a0a1a%22%2C%22theme_color%22%3A%22%230a0a1a%22%7D">
-<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%230a0a1a' width='100' height='100' rx='20'/><text y='68' x='50' text-anchor='middle' font-size='55'>🔥</text></svg>">
+<meta name="theme-color" content="#1c1c1e">
+<link rel="manifest" href="data:application/json,%7B%22name%22%3A%22askeza%22%2C%22short_name%22%3A%22askeza%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%231c1c1e%22%2C%22theme_color%22%3A%22%231c1c1e%22%7D">
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%231c1c1e' width='100' height='100' rx='20'/><text y='68' x='50' text-anchor='middle' font-size='55'>🔥</text></svg>">
 <title>askeza</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{
-  --bg:#0a0a1a;--card:#12122a;--card-border:rgba(255,255,255,0.06);
-  --text:#e8e8f0;--text-dim:#7a7a9a;
-  --cyan:#00d4ff;--green:#00ff88;--amber:#ffaa00;
-  --purple:#8b5cf6;--red:#ff4466;--gold:#ffd700;
+  --bg:#1c1c1e;--surface:#2c2c2e;--surface2:#3a3a3c;
+  --text:#f2f2f7;--text2:#8e8e93;--text3:#636366;
+  --accent:#2aabee;--accent-dim:rgba(42,171,238,0.12);
+  --red:#ff453a;--green:#30d158;--gold:#ffd60a;
   --safe-top:env(safe-area-inset-top,20px);--safe-bottom:env(safe-area-inset-bottom,20px);
 }
-body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;min-height:100dvh;overflow-x:hidden;padding-top:var(--safe-top);padding-bottom:calc(var(--safe-bottom)+20px)}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;min-height:100dvh;overflow-x:hidden;padding-top:var(--safe-top);padding-bottom:calc(var(--safe-bottom)+20px)}
+
+/* === ANIMATIONS === */
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes barGrow{from{width:0%}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.6}}
+@keyframes celBounce{0%{transform:scale(0) rotate(-10deg)}60%{transform:scale(1.15) rotate(2deg)}100%{transform:scale(1) rotate(0)}}
+@keyframes confettiFall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+
+.animate-in{animation:fadeUp 0.35s ease-out both}
+.animate-in:nth-child(1){animation-delay:0.03s}
+.animate-in:nth-child(2){animation-delay:0.06s}
+.animate-in:nth-child(3){animation-delay:0.09s}
+.animate-in:nth-child(4){animation-delay:0.12s}
+.animate-in:nth-child(5){animation-delay:0.15s}
 
 /* === TOP BAR === */
-.topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 8px}
-.topbar h1{font-size:28px;font-weight:900;background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:2px}
-.topbar-right{display:flex;align-items:center;gap:12px}
-.menu-btn{background:none;border:none;color:var(--text-dim);font-size:24px;cursor:pointer;padding:6px;border-radius:10px;display:flex;align-items:center;justify-content:center}
-.menu-btn:active{background:rgba(255,255,255,0.05)}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 20px 10px;animation:fadeIn 0.3s ease}
+.topbar h1{font-size:22px;font-weight:700;color:#fff;letter-spacing:1.5px}
+.topbar-right{display:flex;align-items:center;gap:6px}
+.menu-btn{background:none;border:none;color:var(--text2);font-size:20px;cursor:pointer;padding:8px;border-radius:50%;display:flex;align-items:center;justify-content:center;transition:background 0.2s,transform 0.15s}
+.menu-btn:active{background:var(--surface);transform:scale(0.92)}
 
 /* === SIDE MENU === */
-.side-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:400;opacity:0;pointer-events:none;transition:opacity 0.3s}
+.side-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:400;opacity:0;pointer-events:none;transition:opacity 0.25s ease}
 .side-overlay.open{opacity:1;pointer-events:all}
-.side-menu{position:fixed;top:0;right:0;bottom:0;width:280px;background:#151530;z-index:401;transform:translateX(100%);transition:transform 0.35s cubic-bezier(0.32,0.72,0,1);padding:calc(var(--safe-top)+16px) 16px calc(var(--safe-bottom)+16px);overflow-y:auto;display:flex;flex-direction:column}
+.side-menu{position:fixed;top:0;right:0;bottom:0;width:280px;background:#2c2c2e;z-index:401;transform:translateX(100%);transition:transform 0.3s cubic-bezier(0.25,1,0.5,1);padding:calc(var(--safe-top)+16px) 16px calc(var(--safe-bottom)+16px);overflow-y:auto;display:flex;flex-direction:column}
 .side-overlay.open .side-menu{transform:translateX(0)}
-.side-menu-title{font-size:18px;font-weight:800;margin-bottom:16px;padding:0 4px;color:var(--text)}
-.side-habit{display:flex;align-items:center;gap:12px;padding:14px 12px;border-radius:14px;margin-bottom:6px;cursor:pointer;border:1px solid transparent;transition:all 0.2s}
-.side-habit:active{transform:scale(0.97)}
-.side-habit.active{background:rgba(0,212,255,0.08);border-color:rgba(0,212,255,0.2)}
-.side-habit-emoji{font-size:22px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.05);border-radius:12px}
-.side-habit-name{font-size:14px;font-weight:700}
-.side-habit-sub{font-size:11px;color:var(--text-dim);margin-top:1px}
-.side-add{display:flex;align-items:center;gap:10px;padding:14px 12px;border-radius:14px;cursor:pointer;color:var(--cyan);font-size:14px;font-weight:600;border:1px dashed rgba(0,212,255,0.2);margin-top:8px;justify-content:center}
-.side-add:active{background:rgba(0,212,255,0.05)}
+.side-menu-title{font-size:15px;font-weight:600;margin-bottom:16px;padding:0 4px;color:var(--text2);text-transform:uppercase;letter-spacing:0.5px}
+.side-habit{display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;margin-bottom:4px;cursor:pointer;transition:background 0.15s,transform 0.15s}
+.side-habit:active{transform:scale(0.98);background:var(--surface2)}
+.side-habit.active{background:var(--accent-dim)}
+.side-habit-emoji{font-size:20px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.06);border-radius:10px}
+.side-habit-name{font-size:14px;font-weight:600;color:var(--text)}
+.side-habit-sub{font-size:12px;color:var(--text2);margin-top:1px}
+.side-add{display:flex;align-items:center;gap:8px;padding:12px;border-radius:12px;cursor:pointer;color:var(--accent);font-size:14px;font-weight:600;margin-top:8px;justify-content:center;transition:background 0.15s}
+.side-add:active{background:var(--accent-dim)}
 
-/* === HABIT SUBTITLE === */
-.habit-sub{text-align:center;font-size:12px;color:var(--text-dim);padding:0 20px 8px;font-weight:500}
+/* === HABIT HEADER === */
+.habit-header{text-align:center;padding:8px 20px 4px;animation:fadeUp 0.3s ease-out}
+.habit-sub{text-align:center;font-size:13px;color:var(--text3);padding:0 20px 12px;font-weight:400}
+
+/* === QUOTE === */
+.quote-bar{margin:0 20px 16px;padding:10px 16px;background:var(--surface);border-radius:12px;font-size:13px;color:var(--text2);line-height:1.5;text-align:center;font-style:italic;animation:fadeUp 0.35s ease-out both;animation-delay:0.05s}
 
 /* === TIMER BARS === */
-.timer-bars{display:flex;flex-direction:column;gap:8px;padding:0 20px;margin-bottom:16px}
-.tbar{position:relative;height:42px;background:rgba(255,255,255,0.04);border-radius:12px;overflow:hidden}
-.tbar-fill{height:100%;border-radius:12px;transition:width 1s linear;display:flex;align-items:center;padding:0 14px;min-width:55px}
-.tbar-text{font-size:16px;font-weight:800;color:#fff;white-space:nowrap;display:flex;align-items:center;gap:6px}
-.tbar-text .tbar-num{font-size:22px;font-variant-numeric:tabular-nums}
-.tbar-text .tbar-label{font-size:13px;font-weight:600;opacity:0.85}
+.timer-bars{display:flex;flex-direction:column;gap:6px;padding:0 20px;margin-bottom:16px}
+.tbar{position:relative;height:38px;background:var(--surface);border-radius:10px;overflow:visible;animation:fadeUp 0.35s ease-out both}
+.tbar:nth-child(1){animation-delay:0.06s}
+.tbar:nth-child(2){animation-delay:0.1s}
+.tbar:nth-child(3){animation-delay:0.14s}
+.tbar:nth-child(4){animation-delay:0.18s}
+.tbar:nth-child(5){animation-delay:0.22s}
+.tbar-fill{height:100%;border-radius:10px;transition:width 1s cubic-bezier(0.4,0,0.2,1);min-width:2px;animation:barGrow 0.8s ease-out both}
+.tbar-text{position:absolute;left:12px;top:0;height:100%;font-size:15px;font-weight:600;color:#fff;white-space:nowrap;display:flex;align-items:center;gap:5px;pointer-events:none}
+.tbar-text .tbar-num{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums}
+.tbar-text .tbar-label{font-size:12px;font-weight:500;opacity:0.75}
 
 /* === MILESTONE === */
-.milestone-section{padding:0 20px;margin-bottom:16px}
-.milestone-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.milestone-label{font-size:12px;color:var(--text-dim)}
-.milestone-target{font-size:12px;font-weight:600}
-.progress-track{height:8px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden}
-.progress-fill{height:100%;border-radius:4px;transition:width 1s linear;position:relative}
-.progress-fill::after{content:'';position:absolute;right:0;top:0;width:20px;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3));border-radius:4px}
+.milestone-section{padding:0 20px;margin-bottom:16px;animation:fadeUp 0.35s ease-out both;animation-delay:0.2s}
+.milestone-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.milestone-label{font-size:12px;color:var(--text2)}
+.milestone-target{font-size:12px;font-weight:600;color:var(--accent)}
+.progress-track{height:4px;background:var(--surface);border-radius:2px;overflow:hidden}
+.progress-fill{height:100%;border-radius:2px;transition:width 1s cubic-bezier(0.4,0,0.2,1);background:var(--accent)}
 
-/* === TOKEN CHIPS at bottom === */
-.tokens-section{padding:0 20px}
-.tokens-title{font-size:13px;color:var(--text-dim);font-weight:600;margin-bottom:8px}
+/* === TOKENS === */
+.tokens-section{padding:0 20px;animation:fadeUp 0.35s ease-out both;animation-delay:0.25s}
+.tokens-title{font-size:13px;color:var(--text3);font-weight:500;margin-bottom:8px}
 .tokens-row{display:flex;gap:6px;flex-wrap:wrap;cursor:pointer}
-.token{font-size:11px;padding:5px 11px;border-radius:20px;font-weight:600;display:flex;align-items:center;gap:4px}
-.token.earned{background:rgba(255,215,0,0.1);color:var(--gold);border:1px solid rgba(255,215,0,0.25)}
-.token.locked{background:rgba(255,255,255,0.02);color:var(--text-dim);border:1px solid rgba(255,255,255,0.05);opacity:0.5;cursor:default}
+.token{font-size:12px;padding:6px 12px;border-radius:8px;font-weight:600;display:flex;align-items:center;gap:4px;transition:transform 0.15s}
+.token:active{transform:scale(0.95)}
+.token.earned{background:rgba(255,214,10,0.1);color:var(--gold);border:1px solid rgba(255,214,10,0.2)}
+.token.locked{background:var(--surface);color:var(--text3);border:none;opacity:0.6;cursor:default}
 
 /* === ACTION BUTTONS === */
-.action-row{display:flex;gap:10px;padding:16px 20px 8px;justify-content:center}
-.action-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 8px;border-radius:14px;background:rgba(255,255,255,0.03);border:1px solid var(--card-border);cursor:pointer;color:var(--text-dim);font-size:11px;font-weight:600;font-family:inherit}
-.action-btn:active{background:rgba(255,255,255,0.06)}
-.action-btn .action-icon{font-size:20px}
-.action-btn.danger{color:var(--red);border-color:rgba(255,68,102,0.15)}
+.action-row{display:flex;gap:8px;padding:16px 20px 8px;justify-content:center;animation:fadeUp 0.35s ease-out both;animation-delay:0.3s}
+.action-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 8px;border-radius:12px;background:var(--surface);border:none;cursor:pointer;color:var(--text2);font-size:11px;font-weight:500;font-family:inherit;transition:background 0.15s,transform 0.15s}
+.action-btn:active{background:var(--surface2);transform:scale(0.96)}
+.action-btn .action-icon{font-size:18px}
+.action-btn.danger{color:var(--red)}
 
 /* === EMPTY STATE === */
-.empty-state{text-align:center;padding:80px 40px;color:var(--text-dim)}
-.empty-state .empty-icon{font-size:64px;margin-bottom:16px}
-.empty-state h2{font-size:20px;color:var(--text);margin-bottom:8px}
+.empty-state{text-align:center;padding:80px 40px;color:var(--text2);animation:fadeUp 0.4s ease-out}
+.empty-state .empty-icon{font-size:56px;margin-bottom:16px}
+.empty-state h2{font-size:18px;color:var(--text);margin-bottom:8px;font-weight:600}
 .empty-state p{font-size:14px;line-height:1.5;margin-bottom:24px}
-.empty-btn{display:inline-block;padding:14px 32px;border-radius:16px;background:linear-gradient(135deg,var(--cyan),var(--purple));color:#fff;font-size:16px;font-weight:700;cursor:pointer;border:none;font-family:inherit}
+.empty-btn{display:inline-block;padding:12px 28px;border-radius:12px;background:var(--accent);color:#fff;font-size:15px;font-weight:600;cursor:pointer;border:none;font-family:inherit;transition:transform 0.15s,opacity 0.15s}
+.empty-btn:active{transform:scale(0.96);opacity:0.85}
 
 /* === MODAL === */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:200;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:200;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s}
 .modal-overlay.active{opacity:1;pointer-events:all}
-.modal{background:#1a1a2e;border-radius:24px 24px 0 0;padding:24px 20px calc(var(--safe-bottom)+24px);width:100%;max-width:480px;max-height:85vh;overflow-y:auto;transform:translateY(100%);transition:transform 0.35s cubic-bezier(0.32,0.72,0,1)}
+.modal{background:#2c2c2e;border-radius:16px 16px 0 0;padding:20px 20px calc(var(--safe-bottom)+20px);width:100%;max-width:480px;max-height:85vh;overflow-y:auto;transform:translateY(100%);transition:transform 0.3s cubic-bezier(0.25,1,0.5,1)}
 .modal-overlay.active .modal{transform:translateY(0)}
-.modal h2{font-size:22px;font-weight:800;margin-bottom:20px;text-align:center}
-.modal-handle{width:40px;height:4px;background:rgba(255,255,255,0.15);border-radius:2px;margin:0 auto 16px}
-.form-group{margin-bottom:16px}
-.form-label{font-size:13px;color:var(--text-dim);margin-bottom:6px;display:block;font-weight:500}
-.form-input{width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:14px 16px;font-size:16px;color:var(--text);font-family:inherit;outline:none;transition:border-color 0.2s}
-.form-input:focus{border-color:var(--cyan)}
-.emoji-picker{display:flex;gap:8px;flex-wrap:wrap}
-.emoji-opt{width:48px;height:48px;border-radius:14px;background:rgba(255,255,255,0.04);border:2px solid transparent;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s}
-.emoji-opt.selected{border-color:var(--cyan);background:rgba(0,212,255,0.1)}
+.modal h2{font-size:18px;font-weight:700;margin-bottom:20px;text-align:center}
+.modal-handle{width:36px;height:4px;background:var(--surface2);border-radius:2px;margin:0 auto 14px}
+.form-group{margin-bottom:14px}
+.form-label{font-size:13px;color:var(--text2);margin-bottom:6px;display:block;font-weight:500}
+.form-input{width:100%;background:var(--surface);border:none;border-radius:12px;padding:12px 14px;font-size:16px;color:var(--text);font-family:inherit;outline:none;transition:box-shadow 0.2s}
+.form-input:focus{box-shadow:0 0 0 2px var(--accent)}
+.emoji-picker{display:flex;gap:6px;flex-wrap:wrap}
+.emoji-opt{width:44px;height:44px;border-radius:12px;background:var(--surface);border:2px solid transparent;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.15s}
+.emoji-opt:active{transform:scale(0.93)}
+.emoji-opt.selected{border-color:var(--accent);background:var(--accent-dim)}
 .color-picker{display:flex;gap:10px}
-.color-opt{width:36px;height:36px;border-radius:50%;border:3px solid transparent;cursor:pointer;transition:all 0.2s}
-.color-opt.selected{border-color:#fff;transform:scale(1.15)}
-.btn-primary{width:100%;padding:16px;border:none;border-radius:16px;background:linear-gradient(135deg,var(--cyan),var(--purple));color:#fff;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:8px;transition:opacity 0.2s}
-.btn-primary:active{opacity:0.8}
-.btn-secondary{width:100%;padding:14px;border:1px solid rgba(255,255,255,0.1);border-radius:16px;background:transparent;color:var(--text-dim);font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:8px}
+.color-opt{width:32px;height:32px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:all 0.15s}
+.color-opt:active{transform:scale(0.9)}
+.color-opt.selected{border-color:#fff;transform:scale(1.1)}
+.btn-primary{width:100%;padding:14px;border:none;border-radius:12px;background:var(--accent);color:#fff;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:8px;transition:transform 0.15s,opacity 0.15s}
+.btn-primary:active{transform:scale(0.98);opacity:0.85}
+.btn-secondary{width:100%;padding:12px;border:none;border-radius:12px;background:var(--surface);color:var(--text2);font-size:14px;font-weight:500;cursor:pointer;font-family:inherit;margin-top:8px;transition:transform 0.15s}
+.btn-secondary:active{transform:scale(0.98)}
 
 /* === ALL TOKENS MODAL === */
 .all-tokens-section{margin-bottom:20px}
-.all-tokens-label{font-size:14px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.all-tokens-label{font-size:13px;font-weight:600;margin-bottom:10px;display:flex;align-items:center;gap:6px;text-transform:uppercase;letter-spacing:0.3px}
 .all-tokens-label.active-label{color:var(--gold)}
-.all-tokens-label.old-label{color:var(--text-dim)}
-.all-token-card{display:flex;align-items:center;gap:12px;padding:12px;border-radius:14px;background:rgba(255,255,255,0.03);border:1px solid var(--card-border);margin-bottom:8px}
-.all-token-card.old{opacity:0.55}
-.all-token-emoji{font-size:24px}
+.all-tokens-label.old-label{color:var(--text3)}
+.all-token-card{display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;background:rgba(255,255,255,0.04);margin-bottom:6px;transition:transform 0.15s}
+.all-token-card:active{transform:scale(0.98)}
+.all-token-card.old{opacity:0.5}
+.all-token-emoji{font-size:22px}
 .all-token-info{flex:1}
-.all-token-habit{font-size:13px;font-weight:700}
-.all-token-detail{font-size:11px;color:var(--text-dim);margin-top:1px}
-.all-token-badge{font-size:11px;padding:3px 10px;border-radius:12px;font-weight:700}
-.all-token-badge.active-badge{background:rgba(255,215,0,0.12);color:var(--gold)}
-.all-token-badge.old-badge{background:rgba(255,255,255,0.04);color:var(--text-dim)}
+.all-token-habit{font-size:13px;font-weight:600}
+.all-token-detail{font-size:11px;color:var(--text2);margin-top:1px}
+.all-token-badge{font-size:11px;padding:3px 10px;border-radius:8px;font-weight:600}
+.all-token-badge.active-badge{background:rgba(255,214,10,0.1);color:var(--gold)}
+.all-token-badge.old-badge{background:var(--surface);color:var(--text3)}
 
-/* Celebration */
-.celebration{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;background:rgba(0,0,0,0.85);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:500;opacity:0;pointer-events:none;transition:opacity 0.4s}
+/* === CELEBRATION === */
+.celebration{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;background:rgba(0,0,0,0.8);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);z-index:500;opacity:0;pointer-events:none;transition:opacity 0.3s}
 .celebration.active{opacity:1;pointer-events:all}
-.celebration .cel-emoji{font-size:80px;animation:celBounce 0.6s ease}
-.celebration .cel-title{font-size:28px;font-weight:900;margin:16px 0 8px;text-align:center;padding:0 20px}
-.celebration .cel-sub{font-size:15px;color:var(--text-dim);text-align:center;max-width:300px;line-height:1.5}
-.celebration .btn-primary{width:auto;padding:14px 40px;margin-top:24px}
-@keyframes celBounce{0%{transform:scale(0)}50%{transform:scale(1.3)}100%{transform:scale(1)}}
+.celebration .cel-emoji{font-size:72px;animation:celBounce 0.5s ease}
+.celebration .cel-title{font-size:24px;font-weight:700;margin:16px 0 8px;text-align:center;padding:0 20px}
+.celebration .cel-sub{font-size:14px;color:var(--text2);text-align:center;max-width:280px;line-height:1.5}
+.celebration .btn-primary{width:auto;padding:12px 36px;margin-top:24px}
 
 .confetti-piece{position:fixed;width:8px;height:8px;z-index:501;pointer-events:none;border-radius:2px;animation:confettiFall 2.5s ease-out forwards}
-@keyframes confettiFall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
-
-/* Quote */
-.quote-bar{margin:8px 20px 16px;padding:12px 16px;background:linear-gradient(135deg,rgba(0,212,255,0.08),rgba(255,68,136,0.08));border-radius:14px;border:1px solid rgba(0,212,255,0.1);font-size:13px;color:var(--text-dim);line-height:1.5;text-align:center;font-style:italic}
 </style>
 </head>
 <body>
@@ -175,17 +200,17 @@ const QUOTES=[
 ];
 
 const HABIT_PRESETS=[
-  {name:'Курение',emoji:'🚬',color:'#ff4466'},
-  {name:'Алкоголь',emoji:'🍺',color:'#ffaa00'},
-  {name:'Соцсети',emoji:'📱',color:'#8b5cf6'},
-  {name:'Фастфуд',emoji:'🍔',color:'#ff8844'},
-  {name:'Сахар',emoji:'🍬',color:'#ff66aa'},
-  {name:'Кофеин',emoji:'☕',color:'#aa8866'},
-  {name:'Азартные игры',emoji:'🎰',color:'#ffcc00'},
-  {name:'Энергетики',emoji:'⚡',color:'#00dd66'},
+  {name:'Курение',emoji:'🚬',color:'#ff453a'},
+  {name:'Алкоголь',emoji:'🍺',color:'#ff9f0a'},
+  {name:'Соцсети',emoji:'📱',color:'#bf5af2'},
+  {name:'Фастфуд',emoji:'🍔',color:'#ff6723'},
+  {name:'Сахар',emoji:'🍬',color:'#ff375f'},
+  {name:'Кофеин',emoji:'☕',color:'#ac8e68'},
+  {name:'Азартные игры',emoji:'🎰',color:'#ffd60a'},
+  {name:'Энергетики',emoji:'⚡',color:'#30d158'},
 ];
-const COLORS=['#00d4ff','#ff4466','#00ff88','#ffaa00','#8b5cf6','#ff66aa','#ff8844','#00dd66'];
-const BAR_COLORS=[['#00e676','#00c853'],['#00bcd4','#0097a7'],['#42a5f5','#1e88e5'],['#ab47bc','#8e24aa'],['#7e57c2','#5e35b1']];
+const COLORS=['#2aabee','#ff453a','#30d158','#ff9f0a','#bf5af2','#ff375f','#ff6723','#64d2ff'];
+const BAR_COLORS=[['#30d158','#28a745'],['#2aabee','#1a8cd8'],['#5e5ce6','#4b4acf'],['#bf5af2','#a347d1'],['#ff9f0a','#e8900a']];
 
 function loadData(){try{const d=JSON.parse(localStorage.getItem(STORAGE_KEY));return d&&d.habits?d:{habits:[]}}catch{return{habits:[]}}}
 function saveData(d){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(d))}catch{}}
@@ -204,7 +229,6 @@ function getQuote(){const t=new Date();return QUOTES[(t.getFullYear()*366+t.getM
 function pad(n){return String(n).padStart(2,'0')}
 function fmtDate(d){return new Date(d).toLocaleDateString('ru-RU',{day:'numeric',month:'short',year:'numeric'})}
 
-// Count all tokens (active + old) across all habits
 function countAllTokens(){
   let active=0,old=0;
   data.habits.forEach(h=>{
@@ -221,7 +245,7 @@ let activeModal=null;
 let editingId=null;
 let celebrationData=null;
 let checkedMilestones={};
-let formName='',formEmoji='🚬',formColor='#ff4466',formDate='',formTime='';
+let formName='',formEmoji='🚬',formColor='#ff453a',formDate='',formTime='';
 
 function render(){
   const app=document.getElementById('app');
@@ -233,7 +257,7 @@ function render(){
   html+=`<div class="topbar">
     <h1>askeza</h1>
     <div class="topbar-right">
-      <button class="menu-btn" onclick="openAllTokens()" title="Жетоны">🏆 <span style="font-size:13px;font-weight:700;color:var(--gold)">${tokens.total}</span></button>
+      <button class="menu-btn" onclick="openAllTokens()" title="Жетоны">🏆 <span style="font-size:13px;font-weight:600;color:var(--gold)">${tokens.total}</span></button>
       <button class="menu-btn" onclick="toggleSideMenu()">☰</button>
     </div>
   </div>`;
@@ -242,20 +266,19 @@ function render(){
     const e=getElapsed(h.quitDate);
     const{current,next}=getCurrentMilestone(e.totalSeconds);
     const progress=getMilestoneProgress(e.totalSeconds,next);
-    const earned=getEarnedBadges(e.totalSeconds);
-    const color=h.color||'#00d4ff';
+    const color=h.color||'#2aabee';
 
-    // Habit title + subtitle
-    html+=`<div style="text-align:center;padding:4px 20px 2px">
-      <span style="font-size:22px">${h.emoji}</span>
-      <span style="font-size:20px;font-weight:800;margin-left:8px">${h.name}</span>
+    // Habit title
+    html+=`<div class="habit-header">
+      <span style="font-size:20px">${h.emoji}</span>
+      <span style="font-size:18px;font-weight:700;margin-left:8px">${h.name}</span>
     </div>`;
     html+=`<div class="habit-sub">свобода с ${fmtDate(h.quitDate)}</div>`;
 
     // Quote
     html+=`<div class="quote-bar">${getQuote()}</div>`;
 
-    // Timer bars — each fills relative to its own max, hide zeros
+    // Timer bars
     const barItems=[
       {v:e.months,max:12,label:'месяцев',c:BAR_COLORS[0],key:'months'},
       {v:e.days,max:30,label:'дней',c:BAR_COLORS[1],key:'days'},
@@ -276,12 +299,12 @@ function render(){
     html+=`<div class="milestone-section">
       <div class="milestone-header">
         <span class="milestone-label">${current?current.emoji+' '+current.label:'🎯 Старт'}</span>
-        <span class="milestone-target" style="color:${color}">${next?'→ '+next.emoji+' '+next.label:'🏅 Все достигнуты!'}</span>
+        <span class="milestone-target">${next?'→ '+next.emoji+' '+next.label:'🏅 Все достигнуты!'}</span>
       </div>
-      <div class="progress-track"><div class="progress-fill" style="width:${progress}%;background:linear-gradient(90deg,${color},${color}dd)"></div></div>
+      <div class="progress-track"><div class="progress-fill" style="width:${progress}%;background:${color}"></div></div>
     </div>`;
 
-    // Active token — only the highest
+    // Active token
     const topBadge=getTopBadge(e.totalSeconds);
     html+=`<div class="tokens-section" style="margin-top:14px">
       <div class="tokens-title">Активный жетон</div>
@@ -294,14 +317,14 @@ function render(){
     const oldT=h.oldTokens||[];
     if(oldT.length>0){
       html+=`<div class="tokens-section" style="margin-top:12px">
-        <div class="tokens-title" style="color:var(--text-dim)">Старые жетоны (${oldT.length})</div>
+        <div class="tokens-title">Старые жетоны (${oldT.length})</div>
         <div class="tokens-row">
-          ${oldT.map(t=>`<span class="token" style="background:rgba(255,255,255,0.03);color:var(--text-dim);border:1px solid rgba(255,255,255,0.06);opacity:0.6">${t.emoji} ${t.label}</span>`).join('')}
+          ${oldT.map(t=>`<span class="token" style="background:var(--surface);color:var(--text3)">${t.emoji} ${t.label}</span>`).join('')}
         </div>
       </div>`;
     }
 
-    // Action buttons
+    // Actions
     html+=`<div class="action-row">
       <button class="action-btn" onclick="editHabit('${h.id}')"><span class="action-icon">✏️</span>Изменить</button>
       <button class="action-btn danger" onclick="resetStreak('${h.id}')"><span class="action-icon">🔄</span>Сброс</button>
@@ -309,7 +332,6 @@ function render(){
     </div>`;
 
   } else {
-    // Empty state
     html+=`<div class="empty-state">
       <div class="empty-icon">🔥</div>
       <h2>Начни свой путь</h2>
@@ -318,7 +340,7 @@ function render(){
     </div>`;
   }
 
-  // === SIDE MENU ===
+  // Side menu
   html+=`<div class="side-overlay ${sideMenuOpen?'open':''}" onclick="closeSideMenu()">
     <div class="side-menu" onclick="event.stopPropagation()">
       <div class="side-menu-title">Мои привычки</div>
@@ -337,7 +359,7 @@ function render(){
     </div>
   </div>`;
 
-  // === ADD/EDIT MODAL ===
+  // Add/Edit modal
   if(activeModal==='add'||activeModal==='edit'){
     const isEdit=activeModal==='edit';
     html+=`<div class="modal-overlay active" onclick="closeModal(event)"><div class="modal" onclick="event.stopPropagation()">
@@ -354,7 +376,7 @@ function render(){
     </div></div>`;
   }
 
-  // === ALL TOKENS MODAL ===
+  // All tokens modal
   if(activeModal==='allTokens'){
     let activeTokens=[];
     let oldTokens=[];
@@ -378,7 +400,7 @@ function render(){
             <div class="all-token-detail">${t.label}</div>
           </div>
           <div class="all-token-badge active-badge">Активный</div>
-        </div>`).join(''):`<div style="font-size:13px;color:var(--text-dim);padding:8px 0">Пока нет активных жетонов</div>`}
+        </div>`).join(''):`<div style="font-size:13px;color:var(--text3);padding:8px 0">Пока нет активных жетонов</div>`}
       </div>
       ${oldTokens.length>0?`<div class="all-tokens-section">
         <div class="all-tokens-label old-label">📦 Старые (${oldTokens.length})</div>
@@ -395,7 +417,7 @@ function render(){
     </div></div>`;
   }
 
-  // === CELEBRATION ===
+  // Celebration
   if(celebrationData){
     html+=`<div class="celebration active" onclick="closeCelebration()">
       <div class="cel-emoji">${celebrationData.emoji}</div>
@@ -416,7 +438,7 @@ function openAllTokens(){activeModal='allTokens';render()}
 
 function openAddModal(){
   activeModal='add';editingId=null;sideMenuOpen=false;
-  formName='';formEmoji='🚬';formColor='#ff4466';
+  formName='';formEmoji='🚬';formColor='#ff453a';
   const n=new Date();formDate=n.toISOString().split('T')[0];formTime=pad(n.getHours())+':'+pad(n.getMinutes());
   render();
 }
@@ -446,12 +468,11 @@ function editHabit(id){
 }
 
 function resetStreak(id){
-  if(!confirm('Сбросить отсчёт? Текущие жетоны перейдут в «старые».'))return;
+  if(!confirm('Сбросить отсчёт? Текущий жетон перейдёт в «старые».'))return;
   const h=data.habits.find(x=>x.id===id);
   if(h){
     const el=getElapsed(h.quitDate);
     h.bestStreak=Math.max(h.bestStreak||0,el.days);
-    // Move only the highest token to oldTokens
     if(!h.oldTokens)h.oldTokens=[];
     const topM=getTopBadge(el.totalSeconds);
     if(topM){
@@ -474,8 +495,8 @@ function deleteHabit(id){
 function closeCelebration(){celebrationData=null;render()}
 
 function spawnConfetti(){
-  const cols=['#ffd700','#ff4466','#00ff88','#00d4ff','#8b5cf6','#ffaa00'];
-  for(let i=0;i<60;i++){const el=document.createElement('div');el.className='confetti-piece';el.style.left=Math.random()*100+'vw';el.style.background=cols[Math.floor(Math.random()*cols.length)];el.style.animationDelay=Math.random()*0.8+'s';el.style.animationDuration=(1.5+Math.random()*1.5)+'s';el.style.width=(5+Math.random()*6)+'px';el.style.height=(5+Math.random()*6)+'px';document.body.appendChild(el);setTimeout(()=>el.remove(),3000)}
+  const cols=['#ffd60a','#ff453a','#30d158','#2aabee','#bf5af2','#ff9f0a'];
+  for(let i=0;i<50;i++){const el=document.createElement('div');el.className='confetti-piece';el.style.left=Math.random()*100+'vw';el.style.background=cols[Math.floor(Math.random()*cols.length)];el.style.animationDelay=Math.random()*0.8+'s';el.style.animationDuration=(1.5+Math.random()*1.5)+'s';el.style.width=(5+Math.random()*6)+'px';el.style.height=(5+Math.random()*6)+'px';document.body.appendChild(el);setTimeout(()=>el.remove(),3000)}
 }
 
 // === TIMER LOOP ===
@@ -520,7 +541,6 @@ function updateTimers(){
     }
   });
 
-  // Update milestone progress bar
   const h=data.habits.find(x=>x.id===activeHabitId);
   if(h){
     const e=getElapsed(h.quitDate);

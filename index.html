@@ -113,9 +113,9 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 .empty-btn:active{transform:scale(0.96);opacity:0.85}
 
 /* === MODAL === */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:200;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:200;display:flex;align-items:flex-end;justify-content:center;padding:0 12px;opacity:0;pointer-events:none;transition:opacity 0.25s}
 .modal-overlay.active{opacity:1;pointer-events:all}
-.modal{background:#2c2c2e;border-radius:16px 16px 0 0;padding:20px 20px calc(var(--safe-bottom)+20px);width:100%;max-width:480px;max-height:85vh;overflow-y:auto;transform:translateY(100%);transition:transform 0.3s cubic-bezier(0.25,1,0.5,1)}
+.modal{background:#2c2c2e;border-radius:16px;padding:20px 20px calc(var(--safe-bottom)+20px);width:100%;max-width:480px;max-height:85vh;overflow-y:auto;transform:translateY(calc(100% + 12px));transition:transform 0.3s cubic-bezier(0.25,1,0.5,1);margin-bottom:12px}
 .modal-overlay.active .modal{transform:translateY(0)}
 .modal h2{font-size:18px;font-weight:700;margin-bottom:20px;text-align:center}
 .modal-handle{width:36px;height:4px;background:var(--surface2);border-radius:2px;margin:0 auto 14px}

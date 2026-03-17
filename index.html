@@ -48,7 +48,7 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 /* === SIDE MENU === */
 .side-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:400;opacity:0;pointer-events:none;transition:opacity 0.25s ease}
 .side-overlay.open{opacity:1;pointer-events:all}
-.side-menu{position:fixed;top:0;right:0;bottom:0;width:280px;background:#2c2c2e;z-index:401;transform:translateX(100%);transition:transform 0.3s cubic-bezier(0.25,1,0.5,1);padding:calc(var(--safe-top)+48px) 16px calc(var(--safe-bottom)+16px);overflow-y:auto;display:flex;flex-direction:column}
+.side-menu{position:fixed;top:0;right:0;bottom:0;width:280px;background:#2c2c2e;z-index:401;transform:translateX(100%);transition:transform 0.3s cubic-bezier(0.25,1,0.5,1);padding:20px;padding-top:100px;overflow-y:auto;display:flex;flex-direction:column}
 .side-overlay.open .side-menu{transform:translateX(0)}
 .side-menu-title{font-size:15px;font-weight:600;margin-bottom:16px;padding:0 4px;color:var(--text2);text-transform:uppercase;letter-spacing:0.5px}
 .side-habit{display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;margin-bottom:4px;cursor:pointer;transition:background 0.15s,transform 0.15s}
@@ -98,10 +98,10 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 .token.locked{background:var(--surface);color:var(--text3);border:none;opacity:0.6;cursor:default}
 
 /* === ACTION BUTTONS === */
-.action-row{display:flex;gap:8px;padding:16px 20px 8px;justify-content:center;animation:fadeUp 0.35s ease-out both;animation-delay:0.3s}
-.action-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 8px;border-radius:12px;background:var(--surface);border:none;cursor:pointer;color:var(--text2);font-size:11px;font-weight:500;font-family:inherit;transition:background 0.15s,transform 0.15s}
-.action-btn:active{background:var(--surface2);transform:scale(0.96)}
-.action-btn .action-icon{font-size:18px}
+.action-row{display:flex;gap:16px;padding:12px 20px 8px;justify-content:center;animation:fadeUp 0.35s ease-out both;animation-delay:0.3s}
+.action-btn{background:none;border:none;cursor:pointer;color:var(--text3);font-size:13px;font-weight:500;font-family:inherit;transition:color 0.15s,transform 0.15s;padding:6px 0;display:flex;align-items:center;gap:5px}
+.action-btn:active{transform:scale(0.95)}
+.action-btn .action-icon{font-size:14px}
 .action-btn.danger{color:var(--red)}
 
 /* === EMPTY STATE === */
@@ -113,9 +113,9 @@ body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:
 .empty-btn:active{transform:scale(0.96);opacity:0.85}
 
 /* === MODAL === */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:200;display:flex;align-items:flex-end;justify-content:center;padding:0 12px;opacity:0;pointer-events:none;transition:opacity 0.25s}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);z-index:200;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s}
 .modal-overlay.active{opacity:1;pointer-events:all}
-.modal{background:#2c2c2e;border-radius:16px;padding:20px 20px calc(var(--safe-bottom)+20px);width:100%;max-width:480px;max-height:85vh;overflow-y:auto;transform:translateY(calc(100% + 12px));transition:transform 0.3s cubic-bezier(0.25,1,0.5,1);margin-bottom:12px}
+.modal{background:#2c2c2e;border-radius:16px;padding:24px 28px 40px;width:calc(100% - 40px);max-width:460px;max-height:80vh;overflow-y:auto;transform:translateY(110%);transition:transform 0.3s cubic-bezier(0.25,1,0.5,1);margin:0 auto 24px}
 .modal-overlay.active .modal{transform:translateY(0)}
 .modal h2{font-size:18px;font-weight:700;margin-bottom:20px;text-align:center}
 .modal-handle{width:36px;height:4px;background:var(--surface2);border-radius:2px;margin:0 auto 14px}

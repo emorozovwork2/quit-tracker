@@ -11,592 +11,155 @@
 <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%230a0a1a' width='100' height='100' rx='20'/><text y='68' x='50' text-anchor='middle' font-size='55'>🔥</text></svg>">
 <title>askeza</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#0a0a1a;--card:#12122a;--card-border:rgba(255,255,255,0.06);
+  --text:#e8e8f0;--text-dim:#7a7a9a;
+  --cyan:#00d4ff;--green:#00ff88;--amber:#ffaa00;
+  --purple:#8b5cf6;--red:#ff4466;--gold:#ffd700;
+  --safe-top:env(safe-area-inset-top,20px);--safe-bottom:env(safe-area-inset-bottom,20px);
+}
+body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;min-height:100dvh;overflow-x:hidden;padding-top:var(--safe-top);padding-bottom:calc(var(--safe-bottom)+20px)}
 
-  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+/* === TOP BAR === */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 8px}
+.topbar h1{font-size:28px;font-weight:900;background:linear-gradient(135deg,var(--cyan),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:2px}
+.topbar-right{display:flex;align-items:center;gap:12px}
+.menu-btn{background:none;border:none;color:var(--text-dim);font-size:24px;cursor:pointer;padding:6px;border-radius:10px;display:flex;align-items:center;justify-content:center}
+.menu-btn:active{background:rgba(255,255,255,0.05)}
 
-  :root {
-    --bg: #0a0a1a;
-    --card: #12122a;
-    --card-border: rgba(255,255,255,0.06);
-    --text: #e8e8f0;
-    --text-dim: #7a7a9a;
-    --cyan: #00d4ff;
-    --green: #00ff88;
-    --amber: #ffaa00;
-    --pink: #ff4488;
-    --purple: #8b5cf6;
-    --red: #ff4466;
-    --gold: #ffd700;
-    --safe-top: env(safe-area-inset-top, 20px);
-    --safe-bottom: env(safe-area-inset-bottom, 20px);
-  }
+/* === SIDE MENU === */
+.side-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:400;opacity:0;pointer-events:none;transition:opacity 0.3s}
+.side-overlay.open{opacity:1;pointer-events:all}
+.side-menu{position:fixed;top:0;right:0;bottom:0;width:280px;background:#151530;z-index:401;transform:translateX(100%);transition:transform 0.35s cubic-bezier(0.32,0.72,0,1);padding:calc(var(--safe-top)+16px) 16px calc(var(--safe-bottom)+16px);overflow-y:auto;display:flex;flex-direction:column}
+.side-overlay.open .side-menu{transform:translateX(0)}
+.side-menu-title{font-size:18px;font-weight:800;margin-bottom:16px;padding:0 4px;color:var(--text)}
+.side-habit{display:flex;align-items:center;gap:12px;padding:14px 12px;border-radius:14px;margin-bottom:6px;cursor:pointer;border:1px solid transparent;transition:all 0.2s}
+.side-habit:active{transform:scale(0.97)}
+.side-habit.active{background:rgba(0,212,255,0.08);border-color:rgba(0,212,255,0.2)}
+.side-habit-emoji{font-size:22px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.05);border-radius:12px}
+.side-habit-name{font-size:14px;font-weight:700}
+.side-habit-sub{font-size:11px;color:var(--text-dim);margin-top:1px}
+.side-add{display:flex;align-items:center;gap:10px;padding:14px 12px;border-radius:14px;cursor:pointer;color:var(--cyan);font-size:14px;font-weight:600;border:1px dashed rgba(0,212,255,0.2);margin-top:8px;justify-content:center}
+.side-add:active{background:rgba(0,212,255,0.05)}
 
-  body {
-    font-family: 'Inter', -apple-system, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    min-height: 100dvh;
-    overflow-x: hidden;
-    padding-top: var(--safe-top);
-    padding-bottom: calc(var(--safe-bottom) + 80px);
-  }
+/* === HABIT SUBTITLE === */
+.habit-sub{text-align:center;font-size:12px;color:var(--text-dim);padding:0 20px 8px;font-weight:500}
 
-  /* Header */
-  .header {
-    padding: 20px 20px 10px;
-    text-align: center;
-  }
-  .header h1 {
-    font-size: 32px;
-    font-weight: 900;
-    background: linear-gradient(135deg, var(--cyan), var(--purple));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    letter-spacing: 2px;
-  }
-  .header .subtitle {
-    font-size: 13px;
-    color: var(--text-dim);
-    margin-top: 4px;
-  }
+/* === TIMER BARS === */
+.timer-bars{display:flex;flex-direction:column;gap:8px;padding:0 20px;margin-bottom:16px}
+.tbar{position:relative;height:42px;background:rgba(255,255,255,0.04);border-radius:12px;overflow:hidden}
+.tbar-fill{height:100%;border-radius:12px;transition:width 1s linear;display:flex;align-items:center;padding:0 14px;min-width:55px}
+.tbar-text{font-size:16px;font-weight:800;color:#fff;white-space:nowrap;display:flex;align-items:center;gap:6px}
+.tbar-text .tbar-num{font-size:22px;font-variant-numeric:tabular-nums}
+.tbar-text .tbar-label{font-size:13px;font-weight:600;opacity:0.85}
 
-  /* Global level bar */
-  .global-level {
-    margin: 8px 20px 4px;
-    padding: 14px 18px;
-    background: linear-gradient(135deg, rgba(255,215,0,0.08), rgba(139,92,246,0.1));
-    border: 1px solid rgba(255,215,0,0.15);
-    border-radius: 16px;
-  }
-  .gl-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-  }
-  .gl-rank {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .gl-rank-icon { font-size: 22px; }
-  .gl-rank-name { font-size: 15px; font-weight: 800; }
-  .gl-xp-text { font-size: 12px; color: var(--text-dim); font-weight: 600; }
-  .gl-xp-text span { color: var(--cyan); }
-  .gl-bar {
-    height: 6px;
-    background: rgba(255,255,255,0.06);
-    border-radius: 3px;
-    overflow: hidden;
-  }
-  .gl-bar-fill {
-    height: 100%;
-    border-radius: 3px;
-    background: linear-gradient(90deg, var(--gold), var(--amber));
-    transition: width 0.6s ease;
-  }
+/* === MILESTONE === */
+.milestone-section{padding:0 20px;margin-bottom:16px}
+.milestone-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.milestone-label{font-size:12px;color:var(--text-dim)}
+.milestone-target{font-size:12px;font-weight:600}
+.progress-track{height:8px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden}
+.progress-fill{height:100%;border-radius:4px;transition:width 1s linear;position:relative}
+.progress-fill::after{content:'';position:absolute;right:0;top:0;width:20px;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3));border-radius:4px}
 
-  /* Stats summary bar */
-  .stats-bar {
-    display: flex;
-    gap: 10px;
-    padding: 12px 20px;
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-  .stats-bar::-webkit-scrollbar { display: none; }
-  .stat-chip {
-    flex-shrink: 0;
-    background: linear-gradient(135deg, rgba(139,92,246,0.15), rgba(0,212,255,0.1));
-    border: 1px solid rgba(139,92,246,0.2);
-    border-radius: 16px;
-    padding: 10px 16px;
-    text-align: center;
-    min-width: 100px;
-  }
-  .stat-chip .stat-val { font-size: 22px; font-weight: 800; color: var(--cyan); }
-  .stat-chip .stat-label { font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+/* === TOKEN CHIPS at bottom === */
+.tokens-section{padding:0 20px}
+.tokens-title{font-size:13px;color:var(--text-dim);font-weight:600;margin-bottom:8px}
+.tokens-row{display:flex;gap:6px;flex-wrap:wrap;cursor:pointer}
+.token{font-size:11px;padding:5px 11px;border-radius:20px;font-weight:600;display:flex;align-items:center;gap:4px}
+.token.earned{background:rgba(255,215,0,0.1);color:var(--gold);border:1px solid rgba(255,215,0,0.25)}
+.token.locked{background:rgba(255,255,255,0.02);color:var(--text-dim);border:1px solid rgba(255,255,255,0.05);opacity:0.5;cursor:default}
 
-  /* Motivational quote */
-  .quote-bar {
-    margin: 4px 20px 12px;
-    padding: 12px 16px;
-    background: linear-gradient(135deg, rgba(0,212,255,0.08), rgba(255,68,136,0.08));
-    border-radius: 14px;
-    border: 1px solid rgba(0,212,255,0.1);
-    font-size: 13px;
-    color: var(--text-dim);
-    line-height: 1.5;
-    text-align: center;
-    font-style: italic;
-  }
+/* === ACTION BUTTONS === */
+.action-row{display:flex;gap:10px;padding:16px 20px 8px;justify-content:center}
+.action-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 8px;border-radius:14px;background:rgba(255,255,255,0.03);border:1px solid var(--card-border);cursor:pointer;color:var(--text-dim);font-size:11px;font-weight:600;font-family:inherit}
+.action-btn:active{background:rgba(255,255,255,0.06)}
+.action-btn .action-icon{font-size:20px}
+.action-btn.danger{color:var(--red);border-color:rgba(255,68,102,0.15)}
 
-  /* Habit cards */
-  .habits-list {
-    padding: 0 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
+/* === EMPTY STATE === */
+.empty-state{text-align:center;padding:80px 40px;color:var(--text-dim)}
+.empty-state .empty-icon{font-size:64px;margin-bottom:16px}
+.empty-state h2{font-size:20px;color:var(--text);margin-bottom:8px}
+.empty-state p{font-size:14px;line-height:1.5;margin-bottom:24px}
+.empty-btn{display:inline-block;padding:14px 32px;border-radius:16px;background:linear-gradient(135deg,var(--cyan),var(--purple));color:#fff;font-size:16px;font-weight:700;cursor:pointer;border:none;font-family:inherit}
 
-  .habit-card {
-    background: var(--card);
-    border: 1px solid var(--card-border);
-    border-radius: 20px;
-    padding: 20px;
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.2s;
-  }
-  .habit-card:active { transform: scale(0.98); }
+/* === MODAL === */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);z-index:200;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s}
+.modal-overlay.active{opacity:1;pointer-events:all}
+.modal{background:#1a1a2e;border-radius:24px 24px 0 0;padding:24px 20px calc(var(--safe-bottom)+24px);width:100%;max-width:480px;max-height:85vh;overflow-y:auto;transform:translateY(100%);transition:transform 0.35s cubic-bezier(0.32,0.72,0,1)}
+.modal-overlay.active .modal{transform:translateY(0)}
+.modal h2{font-size:22px;font-weight:800;margin-bottom:20px;text-align:center}
+.modal-handle{width:40px;height:4px;background:rgba(255,255,255,0.15);border-radius:2px;margin:0 auto 16px}
+.form-group{margin-bottom:16px}
+.form-label{font-size:13px;color:var(--text-dim);margin-bottom:6px;display:block;font-weight:500}
+.form-input{width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:14px 16px;font-size:16px;color:var(--text);font-family:inherit;outline:none;transition:border-color 0.2s}
+.form-input:focus{border-color:var(--cyan)}
+.emoji-picker{display:flex;gap:8px;flex-wrap:wrap}
+.emoji-opt{width:48px;height:48px;border-radius:14px;background:rgba(255,255,255,0.04);border:2px solid transparent;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s}
+.emoji-opt.selected{border-color:var(--cyan);background:rgba(0,212,255,0.1)}
+.color-picker{display:flex;gap:10px}
+.color-opt{width:36px;height:36px;border-radius:50%;border:3px solid transparent;cursor:pointer;transition:all 0.2s}
+.color-opt.selected{border-color:#fff;transform:scale(1.15)}
+.btn-primary{width:100%;padding:16px;border:none;border-radius:16px;background:linear-gradient(135deg,var(--cyan),var(--purple));color:#fff;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:8px;transition:opacity 0.2s}
+.btn-primary:active{opacity:0.8}
+.btn-secondary{width:100%;padding:14px;border:1px solid rgba(255,255,255,0.1);border-radius:16px;background:transparent;color:var(--text-dim);font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:8px}
 
-  .habit-card .glow {
-    position: absolute;
-    top: -40px; right: -40px;
-    width: 120px; height: 120px;
-    border-radius: 50%;
-    filter: blur(50px);
-    opacity: 0.15;
-    pointer-events: none;
-  }
+/* === ALL TOKENS MODAL === */
+.all-tokens-section{margin-bottom:20px}
+.all-tokens-label{font-size:14px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.all-tokens-label.active-label{color:var(--gold)}
+.all-tokens-label.old-label{color:var(--text-dim)}
+.all-token-card{display:flex;align-items:center;gap:12px;padding:12px;border-radius:14px;background:rgba(255,255,255,0.03);border:1px solid var(--card-border);margin-bottom:8px}
+.all-token-card.old{opacity:0.55}
+.all-token-emoji{font-size:24px}
+.all-token-info{flex:1}
+.all-token-habit{font-size:13px;font-weight:700}
+.all-token-detail{font-size:11px;color:var(--text-dim);margin-top:1px}
+.all-token-badge{font-size:11px;padding:3px 10px;border-radius:12px;font-weight:700}
+.all-token-badge.active-badge{background:rgba(255,215,0,0.12);color:var(--gold)}
+.all-token-badge.old-badge{background:rgba(255,255,255,0.04);color:var(--text-dim)}
 
-  .habit-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 14px;
-  }
-  .habit-info { display: flex; align-items: center; gap: 12px; }
-  .habit-emoji {
-    width: 48px; height: 48px;
-    background: rgba(255,255,255,0.05);
-    border-radius: 14px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 24px;
-  }
-  .habit-name { font-size: 17px; font-weight: 700; }
-  .habit-since { font-size: 11px; color: var(--text-dim); margin-top: 2px; }
+/* Celebration */
+.celebration{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;background:rgba(0,0,0,0.85);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:500;opacity:0;pointer-events:none;transition:opacity 0.4s}
+.celebration.active{opacity:1;pointer-events:all}
+.celebration .cel-emoji{font-size:80px;animation:celBounce 0.6s ease}
+.celebration .cel-title{font-size:28px;font-weight:900;margin:16px 0 8px;text-align:center;padding:0 20px}
+.celebration .cel-sub{font-size:15px;color:var(--text-dim);text-align:center;max-width:300px;line-height:1.5}
+.celebration .btn-primary{width:auto;padding:14px 40px;margin-top:24px}
+@keyframes celBounce{0%{transform:scale(0)}50%{transform:scale(1.3)}100%{transform:scale(1)}}
 
-  .habit-menu-btn {
-    background: none; border: none; color: var(--text-dim);
-    font-size: 20px; padding: 8px; cursor: pointer; border-radius: 10px;
-  }
-  .habit-menu-btn:hover { background: rgba(255,255,255,0.05); }
+.confetti-piece{position:fixed;width:8px;height:8px;z-index:501;pointer-events:none;border-radius:2px;animation:confettiFall 2.5s ease-out forwards}
+@keyframes confettiFall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
 
-  /* Timer display */
-  .timer-display {
-    display: flex;
-    justify-content: center;
-    gap: 6px;
-    margin-bottom: 16px;
-  }
-  .timer-unit { text-align: center; min-width: 52px; }
-  .timer-val {
-    font-size: 32px;
-    font-weight: 900;
-    font-variant-numeric: tabular-nums;
-    line-height: 1;
-    background: linear-gradient(180deg, #fff, #aaa);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  .timer-label {
-    font-size: 9px;
-    color: var(--text-dim);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-top: 4px;
-  }
-  .timer-sep {
-    font-size: 28px;
-    font-weight: 300;
-    color: rgba(255,255,255,0.15);
-    align-self: flex-start;
-    line-height: 1;
-  }
-
-  /* XP bar per habit */
-  .xp-section { margin-bottom: 12px; }
-  .xp-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 6px;
-  }
-  .xp-level { display: flex; align-items: center; gap: 6px; }
-  .xp-level-badge {
-    font-size: 11px;
-    font-weight: 800;
-    padding: 2px 8px;
-    border-radius: 8px;
-    color: #fff;
-  }
-  .xp-level-name { font-size: 12px; font-weight: 700; }
-  .xp-points { font-size: 11px; color: var(--text-dim); font-weight: 600; }
-  .xp-points span { font-weight: 800; }
-  .xp-track {
-    height: 6px;
-    background: rgba(255,255,255,0.06);
-    border-radius: 3px;
-    overflow: hidden;
-  }
-  .xp-fill {
-    height: 100%;
-    border-radius: 3px;
-    transition: width 0.6s ease;
-  }
-
-  /* Milestone progress */
-  .milestone-section { margin-top: 4px; }
-  .milestone-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-  }
-  .milestone-label { font-size: 12px; color: var(--text-dim); }
-  .milestone-target { font-size: 12px; font-weight: 600; }
-  .progress-track {
-    height: 8px;
-    background: rgba(255,255,255,0.06);
-    border-radius: 4px;
-    overflow: hidden;
-  }
-  .progress-fill {
-    height: 100%;
-    border-radius: 4px;
-    transition: width 1s linear;
-    position: relative;
-  }
-  .progress-fill::after {
-    content: '';
-    position: absolute;
-    right: 0; top: 0;
-    width: 20px; height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3));
-    border-radius: 4px;
-  }
-
-  /* Tokens */
-  .tokens-row {
-    display: flex;
-    gap: 6px;
-    margin-top: 12px;
-    flex-wrap: wrap;
-    cursor: pointer;
-  }
-  .token {
-    font-size: 11px;
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-weight: 600;
-    display: flex; align-items: center; gap: 4px;
-  }
-  .token.earned {
-    background: rgba(255,215,0,0.1);
-    color: var(--gold);
-    border: 1px solid rgba(255,215,0,0.25);
-  }
-  .token.locked {
-    background: rgba(255,255,255,0.02);
-    color: var(--text-dim);
-    border: 1px solid rgba(255,255,255,0.05);
-    opacity: 0.5;
-    cursor: default;
-  }
-
-  /* FAB */
-  .fab {
-    position: fixed;
-    bottom: calc(var(--safe-bottom) + 24px);
-    right: 20px;
-    width: 60px; height: 60px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--cyan), var(--purple));
-    border: none;
-    color: #fff;
-    font-size: 32px;
-    cursor: pointer;
-    box-shadow: 0 4px 24px rgba(0,212,255,0.3);
-    display: flex; align-items: center; justify-content: center;
-    z-index: 100;
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-  .fab:active { transform: scale(0.9); }
-
-  /* Empty state */
-  .empty-state {
-    text-align: center;
-    padding: 60px 40px;
-    color: var(--text-dim);
-  }
-  .empty-state .empty-icon { font-size: 64px; margin-bottom: 16px; }
-  .empty-state h2 { font-size: 20px; color: var(--text); margin-bottom: 8px; }
-  .empty-state p { font-size: 14px; line-height: 1.5; }
-
-  /* Modal */
-  .modal-overlay {
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,0.7);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    z-index: 200;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s;
-  }
-  .modal-overlay.active { opacity: 1; pointer-events: all; }
-
-  .modal {
-    background: #1a1a2e;
-    border-radius: 24px 24px 0 0;
-    padding: 24px 20px calc(var(--safe-bottom) + 24px);
-    width: 100%;
-    max-width: 480px;
-    max-height: 85vh;
-    overflow-y: auto;
-    transform: translateY(100%);
-    transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1);
-  }
-  .modal-overlay.active .modal { transform: translateY(0); }
-
-  .modal h2 {
-    font-size: 22px;
-    font-weight: 800;
-    margin-bottom: 20px;
-    text-align: center;
-  }
-  .modal-handle {
-    width: 40px; height: 4px;
-    background: rgba(255,255,255,0.15);
-    border-radius: 2px;
-    margin: 0 auto 16px;
-  }
-
-  .form-group { margin-bottom: 16px; }
-  .form-label { font-size: 13px; color: var(--text-dim); margin-bottom: 6px; display: block; font-weight: 500; }
-  .form-input {
-    width: 100%;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 14px;
-    padding: 14px 16px;
-    font-size: 16px;
-    color: var(--text);
-    font-family: inherit;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  .form-input:focus { border-color: var(--cyan); }
-
-  .emoji-picker {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-  .emoji-opt {
-    width: 48px; height: 48px;
-    border-radius: 14px;
-    background: rgba(255,255,255,0.04);
-    border: 2px solid transparent;
-    font-size: 24px;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.2s;
-  }
-  .emoji-opt.selected {
-    border-color: var(--cyan);
-    background: rgba(0,212,255,0.1);
-  }
-
-  .color-picker { display: flex; gap: 10px; }
-  .color-opt {
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    border: 3px solid transparent;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .color-opt.selected { border-color: #fff; transform: scale(1.15); }
-
-  .btn-primary {
-    width: 100%;
-    padding: 16px;
-    border: none;
-    border-radius: 16px;
-    background: linear-gradient(135deg, var(--cyan), var(--purple));
-    color: #fff;
-    font-size: 16px;
-    font-weight: 700;
-    cursor: pointer;
-    font-family: inherit;
-    margin-top: 8px;
-    transition: opacity 0.2s;
-  }
-  .btn-primary:active { opacity: 0.8; }
-  .btn-primary:disabled { opacity: 0.4; }
-
-  .btn-secondary {
-    width: 100%;
-    padding: 14px;
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 16px;
-    background: transparent;
-    color: var(--text-dim);
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    font-family: inherit;
-    margin-top: 8px;
-  }
-
-  /* Context menu */
-  .ctx-menu {
-    position: fixed;
-    background: #222244;
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 14px;
-    padding: 6px;
-    z-index: 300;
-    min-width: 180px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-  }
-  .ctx-item {
-    display: flex; align-items: center; gap: 10px;
-    padding: 12px 14px;
-    border-radius: 10px;
-    font-size: 14px;
-    cursor: pointer;
-    border: none;
-    background: none;
-    color: var(--text);
-    width: 100%;
-    font-family: inherit;
-  }
-  .ctx-item:hover { background: rgba(255,255,255,0.06); }
-  .ctx-item.danger { color: var(--red); }
-
-  /* Celebration overlay */
-  .celebration {
-    position: fixed; inset: 0;
-    display: flex; align-items: center; justify-content: center;
-    flex-direction: column;
-    background: rgba(0,0,0,0.85);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    z-index: 500;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.4s;
-  }
-  .celebration.active { opacity: 1; pointer-events: all; }
-  .celebration .cel-emoji { font-size: 80px; animation: celBounce 0.6s ease; }
-  .celebration .cel-title { font-size: 28px; font-weight: 900; margin: 16px 0 8px; text-align: center; padding: 0 20px; }
-  .celebration .cel-sub { font-size: 15px; color: var(--text-dim); text-align: center; max-width: 300px; line-height: 1.5; }
-  .celebration .cel-xp {
-    margin-top: 12px;
-    font-size: 18px;
-    font-weight: 800;
-    color: var(--gold);
-    animation: celBounce 0.6s ease 0.2s both;
-  }
-  .celebration .btn-primary { width: auto; padding: 14px 40px; margin-top: 24px; }
-
-  @keyframes celBounce {
-    0% { transform: scale(0); }
-    50% { transform: scale(1.3); }
-    100% { transform: scale(1); }
-  }
-
-  /* Confetti */
-  .confetti-piece {
-    position: fixed;
-    width: 8px; height: 8px;
-    z-index: 501;
-    pointer-events: none;
-    border-radius: 2px;
-    animation: confettiFall 2.5s ease-out forwards;
-  }
-  @keyframes confettiFall {
-    0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
-    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
-  }
-
-  /* Trophy grid */
-  .trophy-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    margin: 16px 0;
-  }
-  .trophy-item {
-    text-align: center;
-    padding: 14px 8px;
-    border-radius: 16px;
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(255,255,255,0.06);
-    transition: all 0.2s;
-  }
-  .trophy-item.earned {
-    background: rgba(255,215,0,0.06);
-    border-color: rgba(255,215,0,0.2);
-  }
-  .trophy-item.locked { opacity: 0.35; }
-  .trophy-emoji { font-size: 28px; }
-  .trophy-name { font-size: 10px; color: var(--text-dim); margin-top: 4px; font-weight: 600; }
-  .trophy-xp { font-size: 10px; color: var(--gold); font-weight: 700; margin-top: 2px; }
+/* Quote */
+.quote-bar{margin:8px 20px 16px;padding:12px 16px;background:linear-gradient(135deg,rgba(0,212,255,0.08),rgba(255,68,136,0.08));border-radius:14px;border:1px solid rgba(0,212,255,0.1);font-size:13px;color:var(--text-dim);line-height:1.5;text-align:center;font-style:italic}
 </style>
 </head>
 <body>
-
 <div id="app"></div>
-
 <script>
-// === Data layer ===
-const STORAGE_KEY = 'askeza_data';
+const STORAGE_KEY='askeza_data';
+(function(){const o=localStorage.getItem('quittrack_data');if(o&&!localStorage.getItem(STORAGE_KEY))localStorage.setItem(STORAGE_KEY,o)})();
 
-// Migrate old data from QuitTrack
-(function() {
-  const old = localStorage.getItem('quittrack_data');
-  if (old && !localStorage.getItem(STORAGE_KEY)) {
-    localStorage.setItem(STORAGE_KEY, old);
-  }
-})();
-
-const MILESTONES = [
-  { label: '1 час',      seconds: 3600,      emoji: '⏰', xp: 10 },
-  { label: '6 часов',    seconds: 21600,     emoji: '🌅', xp: 25 },
-  { label: '12 часов',   seconds: 43200,     emoji: '☀️', xp: 40 },
-  { label: '1 день',     seconds: 86400,     emoji: '🔥', xp: 60 },
-  { label: '3 дня',      seconds: 259200,    emoji: '💪', xp: 100 },
-  { label: '1 неделя',   seconds: 604800,    emoji: '⭐', xp: 175 },
-  { label: '2 недели',   seconds: 1209600,   emoji: '🌟', xp: 250 },
-  { label: '1 месяц',    seconds: 2592000,   emoji: '🏆', xp: 500 },
-  { label: '2 месяца',   seconds: 5184000,   emoji: '👑', xp: 800 },
-  { label: '3 месяца',   seconds: 7776000,   emoji: '💎', xp: 1200 },
-  { label: '6 месяцев',  seconds: 15552000,  emoji: '🎖️', xp: 2000 },
-  { label: '1 год',      seconds: 31536000,  emoji: '🏅', xp: 5000 },
+const MILESTONES=[
+  {label:'1 час',sec:3600,emoji:'⏰'},
+  {label:'6 часов',sec:21600,emoji:'🌅'},
+  {label:'12 часов',sec:43200,emoji:'☀️'},
+  {label:'1 день',sec:86400,emoji:'🔥'},
+  {label:'3 дня',sec:259200,emoji:'💪'},
+  {label:'1 неделя',sec:604800,emoji:'⭐'},
+  {label:'2 недели',sec:1209600,emoji:'🌟'},
+  {label:'1 месяц',sec:2592000,emoji:'🏆'},
+  {label:'2 месяца',sec:5184000,emoji:'👑'},
+  {label:'3 месяца',sec:7776000,emoji:'💎'},
+  {label:'6 месяцев',sec:15552000,emoji:'🎖️'},
+  {label:'1 год',sec:31536000,emoji:'🏅'},
 ];
 
-const LEVELS = [
-  { name: 'Новичок',       icon: '🌱', minXP: 0,     color: '#7a7a9a' },
-  { name: 'Стойкий',       icon: '🛡️', minXP: 50,    color: '#00d4ff' },
-  { name: 'Боец',          icon: '⚔️', minXP: 150,   color: '#00aaff' },
-  { name: 'Воин',          icon: '🗡️', minXP: 400,   color: '#8b5cf6' },
-  { name: 'Страж',         icon: '🏛️', minXP: 800,   color: '#aa66ff' },
-  { name: 'Мастер',        icon: '🧘', minXP: 1500,  color: '#ff66aa' },
-  { name: 'Чемпион',       icon: '🏆', minXP: 3000,  color: '#ffaa00' },
-  { name: 'Легенда',       icon: '👑', minXP: 5000,  color: '#ffd700' },
-  { name: 'Аскет',         icon: '🔱', minXP: 8000,  color: '#ff4466' },
-  { name: 'Бессмертный',   icon: '💫', minXP: 15000, color: '#00ff88' },
-];
-
-const QUOTES = [
+const QUOTES=[
   "Каждая секунда без привычки — это победа над собой",
   "Ты сильнее, чем думаешь. Доказательство — прямо перед тобой",
   "Сила воли — это мышца. И ты качаешь её прямо сейчас",
@@ -611,499 +174,372 @@ const QUOTES = [
   "Сегодня тяжело. Завтра станет легче. Послезавтра — ещё легче",
 ];
 
-const HABIT_PRESETS = [
-  { name: 'Курение', emoji: '🚬', color: '#ff4466' },
-  { name: 'Алкоголь', emoji: '🍺', color: '#ffaa00' },
-  { name: 'Соцсети', emoji: '📱', color: '#8b5cf6' },
-  { name: 'Фастфуд', emoji: '🍔', color: '#ff8844' },
-  { name: 'Сахар', emoji: '🍬', color: '#ff66aa' },
-  { name: 'Кофеин', emoji: '☕', color: '#aa8866' },
-  { name: 'Азартные игры', emoji: '🎰', color: '#ffcc00' },
-  { name: 'Энергетики', emoji: '⚡', color: '#00dd66' },
+const HABIT_PRESETS=[
+  {name:'Курение',emoji:'🚬',color:'#ff4466'},
+  {name:'Алкоголь',emoji:'🍺',color:'#ffaa00'},
+  {name:'Соцсети',emoji:'📱',color:'#8b5cf6'},
+  {name:'Фастфуд',emoji:'🍔',color:'#ff8844'},
+  {name:'Сахар',emoji:'🍬',color:'#ff66aa'},
+  {name:'Кофеин',emoji:'☕',color:'#aa8866'},
+  {name:'Азартные игры',emoji:'🎰',color:'#ffcc00'},
+  {name:'Энергетики',emoji:'⚡',color:'#00dd66'},
 ];
+const COLORS=['#00d4ff','#ff4466','#00ff88','#ffaa00','#8b5cf6','#ff66aa','#ff8844','#00dd66'];
+const BAR_COLORS=[['#00e676','#00c853'],['#00bcd4','#0097a7'],['#42a5f5','#1e88e5'],['#ab47bc','#8e24aa'],['#7e57c2','#5e35b1']];
 
-const COLORS = ['#00d4ff', '#ff4466', '#00ff88', '#ffaa00', '#8b5cf6', '#ff66aa', '#ff8844', '#00dd66'];
+function loadData(){try{const d=JSON.parse(localStorage.getItem(STORAGE_KEY));return d&&d.habits?d:{habits:[]}}catch{return{habits:[]}}}
+function saveData(d){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(d))}catch{}}
+function getElapsed(qd){
+  const diff=Math.max(0,(Date.now()-new Date(qd).getTime())/1000);
+  const months=Math.floor(diff/2592000);const rem=diff%2592000;
+  const days=Math.floor(rem/86400);const hours=Math.floor((rem%86400)/3600);
+  const minutes=Math.floor((rem%3600)/60);const seconds=Math.floor(rem%60);
+  return{totalSeconds:diff,months,days,hours,minutes,seconds};
+}
+function getCurrentMilestone(ts){let c=null,n=null;for(const m of MILESTONES){if(ts>=m.sec)c=m;else{n=m;break}}return{current:c,next:n}}
+function getMilestoneProgress(ts,nxt){if(!nxt)return 100;const i=MILESTONES.indexOf(nxt);const p=i>0?MILESTONES[i-1].sec:0;return Math.min(100,((ts-p)/(nxt.sec-p))*100)}
+function getEarnedBadges(ts){return MILESTONES.filter(m=>ts>=m.sec)}
+function getTopBadge(ts){const earned=getEarnedBadges(ts);return earned.length>0?earned[earned.length-1]:null}
+function getQuote(){const t=new Date();return QUOTES[(t.getFullYear()*366+t.getMonth()*31+t.getDate()+t.getHours())%QUOTES.length]}
+function pad(n){return String(n).padStart(2,'0')}
+function fmtDate(d){return new Date(d).toLocaleDateString('ru-RU',{day:'numeric',month:'short',year:'numeric'})}
 
-function loadData() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : { habits: [] };
-  } catch { return { habits: [] }; }
+// Count all tokens (active + old) across all habits
+function countAllTokens(){
+  let active=0,old=0;
+  data.habits.forEach(h=>{
+    if(getTopBadge(getElapsed(h.quitDate).totalSeconds))active++;
+    old+=(h.oldTokens||[]).length;
+  });
+  return{active,old,total:active+old};
 }
 
-function saveData(d) {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(d)); } catch {}
-}
+let data=loadData();
+let activeHabitId=data.habits.length>0?data.habits[0].id:null;
+let sideMenuOpen=false;
+let activeModal=null;
+let editingId=null;
+let celebrationData=null;
+let checkedMilestones={};
+let formName='',formEmoji='🚬',formColor='#ff4466',formDate='',formTime='';
 
-function getElapsed(quitDate) {
-  const diff = Math.max(0, (Date.now() - new Date(quitDate).getTime()) / 1000);
-  const days = Math.floor(diff / 86400);
-  const hours = Math.floor((diff % 86400) / 3600);
-  const minutes = Math.floor((diff % 3600) / 60);
-  const seconds = Math.floor(diff % 60);
-  return { totalSeconds: diff, days, hours, minutes, seconds };
-}
+function render(){
+  const app=document.getElementById('app');
+  const h=data.habits.find(x=>x.id===activeHabitId);
+  const tokens=countAllTokens();
+  let html='';
 
-function getCurrentMilestone(totalSeconds) {
-  let current = null, next = null;
-  for (let i = 0; i < MILESTONES.length; i++) {
-    if (totalSeconds >= MILESTONES[i].seconds) {
-      current = MILESTONES[i];
-    } else {
-      next = MILESTONES[i];
-      break;
-    }
-  }
-  return { current, next };
-}
-
-function getMilestoneProgress(totalSeconds, next) {
-  if (!next) return 100;
-  const idx = MILESTONES.indexOf(next);
-  const prevSec = idx > 0 ? MILESTONES[idx - 1].seconds : 0;
-  return Math.min(100, ((totalSeconds - prevSec) / (next.seconds - prevSec)) * 100);
-}
-
-function getEarnedBadges(totalSeconds) {
-  return MILESTONES.filter(m => totalSeconds >= m.seconds);
-}
-
-function getHabitXP(habit) {
-  const e = getElapsed(habit.quitDate);
-  return getEarnedBadges(e.totalSeconds).reduce((sum, m) => sum + m.xp, 0);
-}
-
-function getTotalXP() {
-  return data.habits.reduce((sum, h) => sum + getHabitXP(h), 0);
-}
-
-function getLevelFromXP(xp) {
-  let level = LEVELS[0], nextLevel = LEVELS[1] || null;
-  for (let i = 0; i < LEVELS.length; i++) {
-    if (xp >= LEVELS[i].minXP) {
-      level = LEVELS[i];
-      nextLevel = LEVELS[i + 1] || null;
-    }
-  }
-  return { level, nextLevel };
-}
-
-function getLevelProgress(xp, level, nextLevel) {
-  if (!nextLevel) return 100;
-  return Math.min(100, ((xp - level.minXP) / (nextLevel.minXP - level.minXP)) * 100);
-}
-
-function getQuote() {
-  const t = new Date();
-  const idx = (t.getFullYear() * 366 + t.getMonth() * 31 + t.getDate() + t.getHours()) % QUOTES.length;
-  return QUOTES[idx];
-}
-
-function pad(n) { return String(n).padStart(2, '0'); }
-
-function formatDate(d) {
-  return new Date(d).toLocaleDateString('ru-RU', { day: 'numeric', month: 'short', year: 'numeric' });
-}
-
-function getEarnedBadgesTotal() {
-  return data.habits.reduce((t, h) => t + getEarnedBadges(getElapsed(h.quitDate).totalSeconds).length, 0);
-}
-
-// === State ===
-let data = loadData();
-let activeModal = null;
-let editingId = null;
-let menuHabitId = null;
-let menuPos = { y: 0 };
-let celebrationData = null;
-let checkedMilestones = {};
-let showTrophiesForHabit = null;
-
-let formName = '';
-let formEmoji = '🚬';
-let formColor = '#ff4466';
-let formDate = '';
-let formTime = '';
-
-// === Render ===
-function render() {
-  const app = document.getElementById('app');
-  const totalActive = data.habits.length;
-  const totalXP = getTotalXP();
-  const { level, nextLevel } = getLevelFromXP(totalXP);
-  const levelProgress = getLevelProgress(totalXP, level, nextLevel);
-  const totalTokens = getEarnedBadgesTotal();
-
-  let html = '';
-
-  html += `<div class="header">
+  // Top bar
+  html+=`<div class="topbar">
     <h1>askeza</h1>
-    <div class="subtitle">Возьми контроль над своей жизнью</div>
+    <div class="topbar-right">
+      <button class="menu-btn" onclick="openAllTokens()" title="Жетоны">🏆 <span style="font-size:13px;font-weight:700;color:var(--gold)">${tokens.total}</span></button>
+      <button class="menu-btn" onclick="toggleSideMenu()">☰</button>
+    </div>
   </div>`;
 
-  if (totalActive > 0) {
-    html += `<div class="global-level">
-      <div class="gl-top">
-        <div class="gl-rank">
-          <span class="gl-rank-icon">${level.icon}</span>
-          <span class="gl-rank-name" style="color:${level.color}">${level.name}</span>
-        </div>
-        <div class="gl-xp-text"><span>${totalXP}</span> XP${nextLevel ? ' / ' + nextLevel.minXP : ''}</div>
-      </div>
-      <div class="gl-bar">
-        <div class="gl-bar-fill" style="width:${levelProgress}%"></div>
-      </div>
+  if(h){
+    const e=getElapsed(h.quitDate);
+    const{current,next}=getCurrentMilestone(e.totalSeconds);
+    const progress=getMilestoneProgress(e.totalSeconds,next);
+    const earned=getEarnedBadges(e.totalSeconds);
+    const color=h.color||'#00d4ff';
+
+    // Habit title + subtitle
+    html+=`<div style="text-align:center;padding:4px 20px 2px">
+      <span style="font-size:22px">${h.emoji}</span>
+      <span style="font-size:20px;font-weight:800;margin-left:8px">${h.name}</span>
     </div>`;
+    html+=`<div class="habit-sub">свобода с ${fmtDate(h.quitDate)}</div>`;
 
-    html += `<div class="stats-bar">
-      <div class="stat-chip"><div class="stat-val">${totalActive}</div><div class="stat-label">Активных</div></div>
-      <div class="stat-chip"><div class="stat-val">${totalTokens}</div><div class="stat-label">Жетонов</div></div>
-      <div class="stat-chip"><div class="stat-val">${totalXP}</div><div class="stat-label">Всего XP</div></div>
-    </div>`;
+    // Quote
+    html+=`<div class="quote-bar">${getQuote()}</div>`;
 
-    html += `<div class="quote-bar">${getQuote()}</div>`;
+    // Timer bars — each fills relative to its own max, hide zeros
+    const barItems=[
+      {v:e.months,max:12,label:'месяцев',c:BAR_COLORS[0],key:'months'},
+      {v:e.days,max:30,label:'дней',c:BAR_COLORS[1],key:'days'},
+      {v:e.hours,max:24,label:'часов',c:BAR_COLORS[2],key:'hours'},
+      {v:e.minutes,max:60,label:'минут',c:BAR_COLORS[3],key:'minutes'},
+      {v:e.seconds,max:60,label:'секунд',c:BAR_COLORS[4],key:'seconds'},
+    ];
 
-    html += `<div class="habits-list">`;
-    data.habits.forEach(h => {
-      const e = getElapsed(h.quitDate);
-      const { current, next } = getCurrentMilestone(e.totalSeconds);
-      const progress = getMilestoneProgress(e.totalSeconds, next);
-      const earned = getEarnedBadges(e.totalSeconds);
-      const color = h.color || '#00d4ff';
-      const habitXP = getHabitXP(h);
-      const { level: hLevel, nextLevel: hNext } = getLevelFromXP(habitXP);
-      const hProgress = getLevelProgress(habitXP, hLevel, hNext);
-
-      html += `<div class="habit-card" data-id="${h.id}">
-        <div class="glow" style="background:${color}"></div>
-        <div class="habit-top">
-          <div class="habit-info">
-            <div class="habit-emoji">${h.emoji}</div>
-            <div>
-              <div class="habit-name">${h.name}</div>
-              <div class="habit-since">с ${formatDate(h.quitDate)}</div>
-            </div>
-          </div>
-          <button class="habit-menu-btn" onclick="openMenu(event,'${h.id}')">⋯</button>
-        </div>
-        <div class="timer-display" data-quit="${h.quitDate}">
-          <div class="timer-unit"><div class="timer-val" data-field="days">${pad(e.days)}</div><div class="timer-label">дней</div></div>
-          <div class="timer-sep">:</div>
-          <div class="timer-unit"><div class="timer-val" data-field="hours">${pad(e.hours)}</div><div class="timer-label">часов</div></div>
-          <div class="timer-sep">:</div>
-          <div class="timer-unit"><div class="timer-val" data-field="minutes">${pad(e.minutes)}</div><div class="timer-label">минут</div></div>
-          <div class="timer-sep">:</div>
-          <div class="timer-unit"><div class="timer-val" data-field="seconds">${pad(e.seconds)}</div><div class="timer-label">секунд</div></div>
-        </div>
-
-        <div class="xp-section">
-          <div class="xp-header">
-            <div class="xp-level">
-              <span class="xp-level-badge" style="background:${hLevel.color}">${hLevel.icon}</span>
-              <span class="xp-level-name" style="color:${hLevel.color}">${hLevel.name}</span>
-            </div>
-            <div class="xp-points"><span>${habitXP}</span> XP</div>
-          </div>
-          <div class="xp-track">
-            <div class="xp-fill" style="width:${hProgress}%;background:linear-gradient(90deg,${hLevel.color},${hLevel.color}cc)"></div>
-          </div>
-        </div>
-
-        <div class="milestone-section">
-          <div class="milestone-header">
-            <span class="milestone-label">${current ? current.emoji + ' ' + current.label : '🎯 Старт'}</span>
-            <span class="milestone-target" style="color:${color}">${next ? '→ ' + next.emoji + ' ' + next.label + ' (+' + next.xp + ' XP)' : '🏅 Все!'}</span>
-          </div>
-          <div class="progress-track">
-            <div class="progress-fill" style="width:${progress}%;background:linear-gradient(90deg,${color},${color}dd)"></div>
-          </div>
-        </div>
-
-        ${earned.length > 0 ? `<div class="tokens-row" onclick="showTrophies('${h.id}')">
-          ${earned.slice(-3).map(b => `<span class="token earned">${b.emoji} ${b.label}</span>`).join('')}
-          ${earned.length > 3 ? `<span class="token earned">+${earned.length - 3}</span>` : ''}
-        </div>` : `<div class="tokens-row">
-          <span class="token locked">🔒 ${MILESTONES[0].emoji} ${MILESTONES[0].label} — первый жетон</span>
-        </div>`}
-      </div>`;
+    html+=`<div class="timer-bars" data-quit="${h.quitDate}">`;
+    barItems.forEach(b=>{
+      const show=b.v>0;
+      const pct=show?Math.min(100,(b.v/b.max)*100):0;
+      html+=`<div class="tbar" data-bar-key="${b.key}" style="${show?'':'display:none'}"><div class="tbar-fill" style="width:${pct}%;background:linear-gradient(90deg,${b.c[0]},${b.c[1]})"><div class="tbar-text"><span class="tbar-num">${b.v}</span><span class="tbar-label">${b.label}</span></div></div></div>`;
     });
-    html += `</div>`;
-  } else {
-    html += `<div class="empty-state">
-      <div class="empty-icon">🔥</div>
-      <h2>Начни свой путь</h2>
-      <p>Добавь вредную привычку, которую хочешь бросить. Зарабатывай XP и жетоны за каждую веху воздержания</p>
-    </div>`;
-  }
+    html+=`</div>`;
 
-  html += `<button class="fab" onclick="openAddModal()">+</button>`;
-
-  // Add/Edit Modal
-  if (activeModal === 'add' || activeModal === 'edit') {
-    const isEdit = activeModal === 'edit';
-    html += `<div class="modal-overlay active" onclick="closeModal(event)">
-      <div class="modal" onclick="event.stopPropagation()">
-        <div class="modal-handle"></div>
-        <h2>${isEdit ? 'Редактировать' : 'Бросить привычку'}</h2>
-        ${!isEdit ? `<div class="form-group">
-          <div class="form-label">Быстрый выбор</div>
-          <div class="emoji-picker">
-            ${HABIT_PRESETS.map(p => `<button class="emoji-opt" onclick="selectPreset('${p.name}','${p.emoji}','${p.color}')">${p.emoji}</button>`).join('')}
-          </div>
-        </div>` : ''}
-        <div class="form-group">
-          <div class="form-label">Название</div>
-          <input class="form-input" id="f-name" placeholder="Например: Курение" value="${formName}" oninput="formName=this.value">
-        </div>
-        <div class="form-group">
-          <div class="form-label">Цвет</div>
-          <div class="color-picker">
-            ${COLORS.map(c => `<div class="color-opt ${formColor === c ? 'selected' : ''}" style="background:${c}" onclick="selectColor('${c}')"></div>`).join('')}
-          </div>
-        </div>
-        <div class="form-group">
-          <div class="form-label">Дата (когда бросил/а)</div>
-          <input class="form-input" id="f-date" type="date" value="${formDate}" oninput="formDate=this.value">
-        </div>
-        <div class="form-group">
-          <div class="form-label">Время</div>
-          <input class="form-input" id="f-time" type="time" value="${formTime}" oninput="formTime=this.value">
-        </div>
-        <button class="btn-primary" onclick="saveHabit()">${isEdit ? 'Сохранить' : 'Начать отсчёт!'}</button>
-        <button class="btn-secondary" onclick="closeModal()">Отмена</button>
+    // Milestone
+    html+=`<div class="milestone-section">
+      <div class="milestone-header">
+        <span class="milestone-label">${current?current.emoji+' '+current.label:'🎯 Старт'}</span>
+        <span class="milestone-target" style="color:${color}">${next?'→ '+next.emoji+' '+next.label:'🏅 Все достигнуты!'}</span>
       </div>
+      <div class="progress-track"><div class="progress-fill" style="width:${progress}%;background:linear-gradient(90deg,${color},${color}dd)"></div></div>
     </div>`;
-  }
 
-  // Trophy showcase
-  if (activeModal === 'trophies' && showTrophiesForHabit) {
-    const h = data.habits.find(x => x.id === showTrophiesForHabit);
-    if (h) {
-      const e = getElapsed(h.quitDate);
-      const earned = getEarnedBadges(e.totalSeconds);
-      const earnedSet = new Set(earned.map(m => m.label));
-      html += `<div class="modal-overlay active" onclick="closeModal(event)">
-        <div class="modal" onclick="event.stopPropagation()">
-          <div class="modal-handle"></div>
-          <h2>${h.emoji} Жетоны: ${h.name}</h2>
-          <div class="trophy-grid">
-            ${MILESTONES.map(m => {
-              const ok = earnedSet.has(m.label);
-              return `<div class="trophy-item ${ok ? 'earned' : 'locked'}">
-                <div class="trophy-emoji">${ok ? m.emoji : '🔒'}</div>
-                <div class="trophy-name">${m.label}</div>
-                <div class="trophy-xp">${ok ? '+' + m.xp + ' XP' : ''}</div>
-              </div>`;
-            }).join('')}
-          </div>
-          <button class="btn-secondary" onclick="closeModal()">Закрыть</button>
+    // Active token — only the highest
+    const topBadge=getTopBadge(e.totalSeconds);
+    html+=`<div class="tokens-section" style="margin-top:14px">
+      <div class="tokens-title">Активный жетон</div>
+      ${topBadge?`<div class="tokens-row">
+        <span class="token earned">${topBadge.emoji} ${topBadge.label}</span>
+      </div>`:`<div class="tokens-row"><span class="token locked">🔒 Пока нет жетонов</span></div>`}
+    </div>`;
+
+    // Old tokens
+    const oldT=h.oldTokens||[];
+    if(oldT.length>0){
+      html+=`<div class="tokens-section" style="margin-top:12px">
+        <div class="tokens-title" style="color:var(--text-dim)">Старые жетоны (${oldT.length})</div>
+        <div class="tokens-row">
+          ${oldT.map(t=>`<span class="token" style="background:rgba(255,255,255,0.03);color:var(--text-dim);border:1px solid rgba(255,255,255,0.06);opacity:0.6">${t.emoji} ${t.label}</span>`).join('')}
         </div>
       </div>`;
     }
-  }
 
-  // Context menu
-  if (activeModal === 'menu' && menuHabitId) {
-    html += `<div style="position:fixed;inset:0;z-index:290;" onclick="closeModal()"></div>
-    <div class="ctx-menu" style="top:${menuPos.y}px;right:20px;">
-      <button class="ctx-item" onclick="showTrophies('${menuHabitId}')">🏆 Все жетоны</button>
-      <button class="ctx-item" onclick="resetStreak('${menuHabitId}')">🔄 Сбросить отсчёт</button>
-      <button class="ctx-item" onclick="editHabit('${menuHabitId}')">✏️ Редактировать</button>
-      <button class="ctx-item danger" onclick="deleteHabit('${menuHabitId}')">🗑️ Удалить</button>
+    // Action buttons
+    html+=`<div class="action-row">
+      <button class="action-btn" onclick="editHabit('${h.id}')"><span class="action-icon">✏️</span>Изменить</button>
+      <button class="action-btn danger" onclick="resetStreak('${h.id}')"><span class="action-icon">🔄</span>Сброс</button>
+      <button class="action-btn danger" onclick="deleteHabit('${h.id}')"><span class="action-icon">🗑️</span>Удалить</button>
+    </div>`;
+
+  } else {
+    // Empty state
+    html+=`<div class="empty-state">
+      <div class="empty-icon">🔥</div>
+      <h2>Начни свой путь</h2>
+      <p>Добавь вредную привычку, которую хочешь бросить, и следи за прогрессом</p>
+      <button class="empty-btn" onclick="openAddModal()">Добавить привычку</button>
     </div>`;
   }
 
-  // Celebration
-  if (celebrationData) {
-    html += `<div class="celebration active" onclick="closeCelebration()">
+  // === SIDE MENU ===
+  html+=`<div class="side-overlay ${sideMenuOpen?'open':''}" onclick="closeSideMenu()">
+    <div class="side-menu" onclick="event.stopPropagation()">
+      <div class="side-menu-title">Мои привычки</div>
+      ${data.habits.map(hab=>{
+        const el=getElapsed(hab.quitDate);
+        const isActive=hab.id===activeHabitId;
+        return `<div class="side-habit ${isActive?'active':''}" onclick="selectHabit('${hab.id}')">
+          <div class="side-habit-emoji">${hab.emoji}</div>
+          <div>
+            <div class="side-habit-name">${hab.name}</div>
+            <div class="side-habit-sub">${el.months>0?el.months+' мес. ':''}${el.days} дн. ${el.hours} ч.</div>
+          </div>
+        </div>`;
+      }).join('')}
+      <div class="side-add" onclick="openAddModal()">+ Добавить привычку</div>
+    </div>
+  </div>`;
+
+  // === ADD/EDIT MODAL ===
+  if(activeModal==='add'||activeModal==='edit'){
+    const isEdit=activeModal==='edit';
+    html+=`<div class="modal-overlay active" onclick="closeModal(event)"><div class="modal" onclick="event.stopPropagation()">
+      <div class="modal-handle"></div><h2>${isEdit?'Редактировать':'Бросить привычку'}</h2>
+      ${!isEdit?`<div class="form-group"><div class="form-label">Быстрый выбор</div><div class="emoji-picker">
+        ${HABIT_PRESETS.map(p=>`<button class="emoji-opt" onclick="selectPreset('${p.name}','${p.emoji}','${p.color}')">${p.emoji}</button>`).join('')}
+      </div></div>`:''}
+      <div class="form-group"><div class="form-label">Название</div><input class="form-input" id="f-name" placeholder="Например: Курение" value="${formName}" oninput="formName=this.value"></div>
+      <div class="form-group"><div class="form-label">Цвет</div><div class="color-picker">${COLORS.map(c=>`<div class="color-opt ${formColor===c?'selected':''}" style="background:${c}" onclick="selectColor('${c}')"></div>`).join('')}</div></div>
+      <div class="form-group"><div class="form-label">Дата (когда бросил/а)</div><input class="form-input" id="f-date" type="date" value="${formDate}" oninput="formDate=this.value"></div>
+      <div class="form-group"><div class="form-label">Время</div><input class="form-input" id="f-time" type="time" value="${formTime}" oninput="formTime=this.value"></div>
+      <button class="btn-primary" onclick="saveHabit()">${isEdit?'Сохранить':'Начать отсчёт!'}</button>
+      <button class="btn-secondary" onclick="closeModal()">Отмена</button>
+    </div></div>`;
+  }
+
+  // === ALL TOKENS MODAL ===
+  if(activeModal==='allTokens'){
+    let activeTokens=[];
+    let oldTokens=[];
+    data.habits.forEach(hab=>{
+      const el=getElapsed(hab.quitDate);
+      const top=getTopBadge(el.totalSeconds);
+      if(top)activeTokens.push({emoji:top.emoji,label:top.label,habit:hab.name,habitEmoji:hab.emoji,color:hab.color});
+      (hab.oldTokens||[]).forEach(t=>{
+        oldTokens.push({emoji:t.emoji,label:t.label,habit:hab.name,habitEmoji:hab.emoji,date:t.date||''});
+      });
+    });
+
+    html+=`<div class="modal-overlay active" onclick="closeModal(event)"><div class="modal" onclick="event.stopPropagation()">
+      <div class="modal-handle"></div><h2>🏆 Все жетоны</h2>
+      <div class="all-tokens-section">
+        <div class="all-tokens-label active-label">🔥 Активные (${activeTokens.length})</div>
+        ${activeTokens.length>0?activeTokens.map(t=>`<div class="all-token-card">
+          <div class="all-token-emoji">${t.emoji}</div>
+          <div class="all-token-info">
+            <div class="all-token-habit">${t.habitEmoji} ${t.habit}</div>
+            <div class="all-token-detail">${t.label}</div>
+          </div>
+          <div class="all-token-badge active-badge">Активный</div>
+        </div>`).join(''):`<div style="font-size:13px;color:var(--text-dim);padding:8px 0">Пока нет активных жетонов</div>`}
+      </div>
+      ${oldTokens.length>0?`<div class="all-tokens-section">
+        <div class="all-tokens-label old-label">📦 Старые (${oldTokens.length})</div>
+        ${oldTokens.map(t=>`<div class="all-token-card old">
+          <div class="all-token-emoji">${t.emoji}</div>
+          <div class="all-token-info">
+            <div class="all-token-habit">${t.habitEmoji} ${t.habit}</div>
+            <div class="all-token-detail">${t.label}${t.date?' · сброс '+t.date:''}</div>
+          </div>
+          <div class="all-token-badge old-badge">Старый</div>
+        </div>`).join('')}
+      </div>`:''}
+      <button class="btn-secondary" onclick="closeModal()">Закрыть</button>
+    </div></div>`;
+  }
+
+  // === CELEBRATION ===
+  if(celebrationData){
+    html+=`<div class="celebration active" onclick="closeCelebration()">
       <div class="cel-emoji">${celebrationData.emoji}</div>
       <div class="cel-title" style="color:${celebrationData.color}">${celebrationData.title}</div>
       <div class="cel-sub">${celebrationData.subtitle}</div>
-      <div class="cel-xp">+${celebrationData.xp} XP</div>
       <button class="btn-primary" onclick="closeCelebration()">Продолжить 💪</button>
     </div>`;
   }
 
-  app.innerHTML = html;
+  app.innerHTML=html;
 }
 
-// === Actions ===
-function openAddModal() {
-  activeModal = 'add';
-  editingId = null;
-  formName = '';
-  formEmoji = '🚬';
-  formColor = '#ff4466';
-  const now = new Date();
-  formDate = now.toISOString().split('T')[0];
-  formTime = pad(now.getHours()) + ':' + pad(now.getMinutes());
+// === ACTIONS ===
+function toggleSideMenu(){sideMenuOpen=!sideMenuOpen;render()}
+function closeSideMenu(){sideMenuOpen=false;render()}
+function selectHabit(id){activeHabitId=id;sideMenuOpen=false;render()}
+function openAllTokens(){activeModal='allTokens';render()}
+
+function openAddModal(){
+  activeModal='add';editingId=null;sideMenuOpen=false;
+  formName='';formEmoji='🚬';formColor='#ff4466';
+  const n=new Date();formDate=n.toISOString().split('T')[0];formTime=pad(n.getHours())+':'+pad(n.getMinutes());
+  render();
+}
+function selectPreset(n,e,c){formName=n;formEmoji=e;formColor=c;document.getElementById('f-name').value=n;render()}
+function selectColor(c){formColor=c;render()}
+function closeModal(e){if(e&&e.target!==e.currentTarget)return;activeModal=null;editingId=null;render()}
+
+function saveHabit(){
+  const name=formName.trim();if(!name)return;
+  const qd=new Date(formDate+'T'+(formTime||'00:00')).toISOString();
+  if(editingId){
+    const h=data.habits.find(x=>x.id===editingId);
+    if(h){h.name=name;h.color=formColor;h.quitDate=qd}
+  }else{
+    const newH={id:'h_'+Date.now(),name,emoji:formEmoji,color:formColor,quitDate:qd,bestStreak:0,oldTokens:[]};
+    data.habits.push(newH);
+    activeHabitId=newH.id;
+  }
+  saveData(data);activeModal=null;editingId=null;render();
+}
+
+function editHabit(id){
+  const h=data.habits.find(x=>x.id===id);if(!h)return;
+  activeModal='edit';editingId=id;formName=h.name;formEmoji=h.emoji;formColor=h.color;
+  const d=new Date(h.quitDate);formDate=d.toISOString().split('T')[0];formTime=pad(d.getHours())+':'+pad(d.getMinutes());
   render();
 }
 
-function selectPreset(name, emoji, color) {
-  formName = name;
-  formEmoji = emoji;
-  formColor = color;
-  document.getElementById('f-name').value = name;
-  render();
+function resetStreak(id){
+  if(!confirm('Сбросить отсчёт? Текущие жетоны перейдут в «старые».'))return;
+  const h=data.habits.find(x=>x.id===id);
+  if(h){
+    const el=getElapsed(h.quitDate);
+    h.bestStreak=Math.max(h.bestStreak||0,el.days);
+    // Move only the highest token to oldTokens
+    if(!h.oldTokens)h.oldTokens=[];
+    const topM=getTopBadge(el.totalSeconds);
+    if(topM){
+      const resetDate=new Date().toLocaleDateString('ru-RU',{day:'numeric',month:'short'});
+      h.oldTokens.push({emoji:topM.emoji,label:topM.label,date:resetDate});
+    }
+    h.quitDate=new Date().toISOString();
+    checkedMilestones[h.id]=0;
+  }
+  saveData(data);render();
 }
 
-function selectColor(c) { formColor = c; render(); }
-
-function openMenu(event, id) {
-  event.stopPropagation();
-  menuHabitId = id;
-  menuPos = { y: Math.min(event.clientY, window.innerHeight - 220) };
-  activeModal = 'menu';
-  render();
+function deleteHabit(id){
+  if(!confirm('Удалить эту привычку?'))return;
+  data.habits=data.habits.filter(x=>x.id!==id);
+  if(activeHabitId===id)activeHabitId=data.habits.length>0?data.habits[0].id:null;
+  saveData(data);render();
 }
 
-function showTrophies(id) {
-  showTrophiesForHabit = id;
-  activeModal = 'trophies';
-  menuHabitId = null;
-  render();
+function closeCelebration(){celebrationData=null;render()}
+
+function spawnConfetti(){
+  const cols=['#ffd700','#ff4466','#00ff88','#00d4ff','#8b5cf6','#ffaa00'];
+  for(let i=0;i<60;i++){const el=document.createElement('div');el.className='confetti-piece';el.style.left=Math.random()*100+'vw';el.style.background=cols[Math.floor(Math.random()*cols.length)];el.style.animationDelay=Math.random()*0.8+'s';el.style.animationDuration=(1.5+Math.random()*1.5)+'s';el.style.width=(5+Math.random()*6)+'px';el.style.height=(5+Math.random()*6)+'px';document.body.appendChild(el);setTimeout(()=>el.remove(),3000)}
 }
 
-function closeModal(e) {
-  if (e && e.target !== e.currentTarget) return;
-  activeModal = null;
-  editingId = null;
-  menuHabitId = null;
-  showTrophiesForHabit = null;
-  render();
-}
-
-function saveHabit() {
-  const name = formName.trim();
-  if (!name) return;
-  const quitDate = new Date(formDate + 'T' + (formTime || '00:00')).toISOString();
-
-  if (editingId) {
-    const h = data.habits.find(x => x.id === editingId);
-    if (h) { h.name = name; h.color = formColor; h.quitDate = quitDate; }
-  } else {
-    data.habits.push({
-      id: 'h_' + Date.now(), name, emoji: formEmoji,
-      color: formColor, quitDate, bestStreak: 0,
+// === TIMER LOOP ===
+function updateTimers(){
+  document.querySelectorAll('.timer-bars').forEach(container=>{
+    const quit=container.dataset.quit;if(!quit)return;
+    const e=getElapsed(quit);
+    const barData=[
+      {v:e.months,max:12,key:'months'},
+      {v:e.days,max:30,key:'days'},
+      {v:e.hours,max:24,key:'hours'},
+      {v:e.minutes,max:60,key:'minutes'},
+      {v:e.seconds,max:60,key:'seconds'},
+    ];
+    barData.forEach(b=>{
+      const tbar=container.querySelector(`[data-bar-key="${b.key}"]`);
+      if(!tbar)return;
+      if(b.v>0){
+        tbar.style.display='';
+        const fill=tbar.querySelector('.tbar-fill');
+        if(fill)fill.style.width=Math.min(100,(b.v/b.max)*100)+'%';
+        const num=tbar.querySelector('.tbar-num');
+        if(num)num.textContent=b.v;
+      }else{
+        tbar.style.display='none';
+      }
     });
-  }
-  saveData(data);
-  activeModal = null;
-  editingId = null;
-  render();
-}
-
-function editHabit(id) {
-  const h = data.habits.find(x => x.id === id);
-  if (!h) return;
-  activeModal = 'edit';
-  editingId = id;
-  formName = h.name;
-  formEmoji = h.emoji;
-  formColor = h.color;
-  const d = new Date(h.quitDate);
-  formDate = d.toISOString().split('T')[0];
-  formTime = pad(d.getHours()) + ':' + pad(d.getMinutes());
-  render();
-}
-
-function resetStreak(id) {
-  if (!confirm('Сбросить отсчёт? Начнём заново с текущего момента.')) return;
-  const h = data.habits.find(x => x.id === id);
-  if (h) {
-    const elapsed = getElapsed(h.quitDate);
-    h.bestStreak = Math.max(h.bestStreak || 0, elapsed.days);
-    h.quitDate = new Date().toISOString();
-  }
-  saveData(data);
-  activeModal = null;
-  render();
-}
-
-function deleteHabit(id) {
-  if (!confirm('Удалить эту привычку?')) return;
-  data.habits = data.habits.filter(x => x.id !== id);
-  saveData(data);
-  activeModal = null;
-  render();
-}
-
-function closeCelebration() { celebrationData = null; render(); }
-
-function spawnConfetti() {
-  const colors = ['#ffd700', '#ff4466', '#00ff88', '#00d4ff', '#8b5cf6', '#ffaa00'];
-  for (let i = 0; i < 60; i++) {
-    const el = document.createElement('div');
-    el.className = 'confetti-piece';
-    el.style.left = Math.random() * 100 + 'vw';
-    el.style.background = colors[Math.floor(Math.random() * colors.length)];
-    el.style.animationDelay = Math.random() * 0.8 + 's';
-    el.style.animationDuration = (1.5 + Math.random() * 1.5) + 's';
-    el.style.width = (5 + Math.random() * 6) + 'px';
-    el.style.height = (5 + Math.random() * 6) + 'px';
-    document.body.appendChild(el);
-    setTimeout(() => el.remove(), 3000);
-  }
-}
-
-// === Timer loop ===
-function updateTimers() {
-  document.querySelectorAll('.timer-display').forEach(display => {
-    const quit = display.dataset.quit;
-    if (!quit) return;
-    const e = getElapsed(quit);
-    const f = display.querySelectorAll('.timer-val');
-    if (f[0]) f[0].textContent = pad(e.days);
-    if (f[1]) f[1].textContent = pad(e.hours);
-    if (f[2]) f[2].textContent = pad(e.minutes);
-    if (f[3]) f[3].textContent = pad(e.seconds);
   });
 
-  data.habits.forEach(h => {
-    const e = getElapsed(h.quitDate);
-    const key = h.id;
-    if (!checkedMilestones[key]) checkedMilestones[key] = 0;
-
-    const earned = getEarnedBadges(e.totalSeconds);
-    if (earned.length > checkedMilestones[key]) {
-      const m = earned[earned.length - 1];
-      checkedMilestones[key] = earned.length;
-      const diff = e.totalSeconds - m.seconds;
-      if (diff < 3 && !celebrationData) {
-        celebrationData = {
-          emoji: m.emoji,
-          title: `${h.name}: ${m.label}!`,
-          subtitle: `Новый жетон! Ты продержался "${m.label}" без ${h.name.toLowerCase()}`,
-          color: h.color,
-          xp: m.xp
-        };
-        spawnConfetti();
-        render();
+  // Check milestones
+  data.habits.forEach(h=>{
+    const e=getElapsed(h.quitDate);const key=h.id;
+    if(!checkedMilestones[key])checkedMilestones[key]=0;
+    const earned=getEarnedBadges(e.totalSeconds);
+    if(earned.length>checkedMilestones[key]){
+      const m=earned[earned.length-1];checkedMilestones[key]=earned.length;
+      const diff=e.totalSeconds-m.sec;
+      if(diff<3&&!celebrationData){
+        celebrationData={emoji:m.emoji,title:`${h.name}: ${m.label}!`,subtitle:'Новый жетон заработан!',color:h.color};
+        spawnConfetti();render();
       }
     }
   });
 
-  data.habits.forEach(h => {
-    const card = document.querySelector(`.habit-card[data-id="${h.id}"]`);
-    if (!card) return;
-    const e = getElapsed(h.quitDate);
-    const { next } = getCurrentMilestone(e.totalSeconds);
-    const progress = getMilestoneProgress(e.totalSeconds, next);
-    const fill = card.querySelector('.progress-fill');
-    if (fill) fill.style.width = progress + '%';
-  });
+  // Update milestone progress bar
+  const h=data.habits.find(x=>x.id===activeHabitId);
+  if(h){
+    const e=getElapsed(h.quitDate);
+    const{next}=getCurrentMilestone(e.totalSeconds);
+    const p=getMilestoneProgress(e.totalSeconds,next);
+    const fill=document.querySelector('.progress-fill');
+    if(fill)fill.style.width=p+'%';
+  }
 
   requestAnimationFrame(updateTimers);
 }
 
-// === Init ===
-data.habits.forEach(h => {
-  checkedMilestones[h.id] = getEarnedBadges(getElapsed(h.quitDate).totalSeconds).length;
+// Init
+data.habits.forEach(h=>{
+  if(!h.oldTokens)h.oldTokens=[];
+  checkedMilestones[h.id]=getEarnedBadges(getElapsed(h.quitDate).totalSeconds).length;
 });
-
-render();
-requestAnimationFrame(updateTimers);
+if(!activeHabitId&&data.habits.length>0)activeHabitId=data.habits[0].id;
+render();requestAnimationFrame(updateTimers);
 </script>
 </body>
 </html>
